@@ -6,6 +6,7 @@ const {
     signUp,
     loginWithId,
     loginWithEmail,
+    forgotPassword,
 
 } = require('../controllers/authController.js');
 
@@ -16,5 +17,6 @@ const {
 
 router.route('/signUp').post(signUpValidator,signUp); 
 router.route('/loginWithId').post(loginWithId);
-router.route('/loginWithEmail').post(loginWithEmail)
+router.route('/loginWithEmail').post(loginWithEmail);
+router.route('/forgotPassword').post(forgotPassword);
 module.exports = router;

@@ -27,16 +27,46 @@ const loginWithId = asyncHandler(async(req,res,next)=>{
         return next(new apiError('Please  , enter your national ID.', 400));
     if(!password)
         return next(new apiError('Please , enter your account password.', 400));
+
+    const user = await User.findOne({nationalID}).select('+password');
+
+    if(!user || !(await user.comparePasswordInDb(password , user.password)))
+        return next(new apiError('Invalid national ID or password.', 400));
+
+    const token = signToken(user._id);
+    res.json({Status : true, Message :"Login successful", token});
 });
 
 const loginWithEmail = asyncHandler(async(req,res,next)=>{
 
-    res.status(201).send('hello2');
+    const {email , password } = req.body;
+
+    if(!email)
+        return next(new apiError('Please  , enter your email.', 400));
+    if(!password)
+        return next(new apiError('Please , enter your account password.', 400));
+
+    const user = await User.findOne({email}).select('+password');
+
+    if(!user || !(await user.comparePasswordInDb(password , user.password)))
+        return next(new apiError('Invalid email or password.', 400));
+
+    const token = signToken(user._id);
+    res.json({Status : true, Message :"Login successful", token});
+    
+});
+
+const forgotPassword = asyncHandler(async(req,res,next)=>{
+
+    
+    res.status(200).send('hello')
+
 });
 module.exports = {
 
     signUp,
     loginWithId,
     loginWithEmail,
+    forgotPassword,
 
 };

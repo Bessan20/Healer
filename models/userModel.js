@@ -50,6 +50,7 @@ const userSchema = new mongoose.Schema({
             },
             message : "Password should contain at least one uppercase letter, one lowercase letter, one number, and one special character."
         },
+        select : false
 
     },
     confirmedPassword : {
@@ -75,7 +76,11 @@ userSchema.pre('save', async function (next) {
     next();
   });
   
-userSchema.methods
+userSchema.methods.comparePasswordInDb = async function(pswd,pswdDB){
+
+    return await bcrypt.compare(pswd,pswdDB);
+ 
+}
 
 const User = mongoose.model('User',userSchema);
 module.exports = User;
