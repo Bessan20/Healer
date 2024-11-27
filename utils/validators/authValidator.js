@@ -6,11 +6,11 @@ const signUpValidator = [
 
     check('nationalID')
     .notEmpty()
-    .withMessage('Your national id is required.')
+    .withMessage('National id is required.')
     .custom((val) =>
         User.findOne({ nationalID: val }).then((user) => {
           if (user) {
-            return Promise.reject(new Error('National id  already exist.'));
+            return Promise.reject(new Error('This national id  is already exist.'));
           }
         })
       )
@@ -21,13 +21,45 @@ const signUpValidator = [
         }
         return true;
       })
+      
       ,check('mobilePhone')
       .notEmpty()
-      .withMessage('Your mobile phone number is required.')
+      .withMessage('Mobile phone number is required.')
       .custom((mobilePhone)=> {
         const regex = /^[0-9]{11}$/;
         if (!regex.test(mobilePhone)) {
           throw new Error('Invalid mobile phone number , it should be 11 digits.');
+        }
+        return true;
+      })
+      ,check('email')
+      .notEmpty()
+      .withMessage('E-mail is required.')
+      .isEmail()
+      .withMessage('This e-mail is invalid.')
+      .custom((val) =>
+        User.findOne({ email : val }).then((user) => {
+          if (user) {
+            return Promise.reject(new Error('This e-mail is  already exist.'));
+          }
+        })
+      )
+      ,check('password')
+      .notEmpty()
+      .withMessage('Password is required.')
+      .custom((password)=>{
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+        if (!regex.test(password)) {
+          throw new Error('Password should be between (8-15) characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+        }
+        return true;
+      })
+      ,check('confirmedPassword')
+      .notEmpty()
+      .withMessage('Confirmation password is required.')
+      .custom((confirmedPassword, { req }) => {
+        if (confirmedPassword !== req.body.password) {
+          throw new Error('Password Confirmation is incorrect.');
         }
         return true;
       })

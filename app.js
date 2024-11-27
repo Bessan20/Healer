@@ -39,8 +39,6 @@ app.use(logging);
 
 
 
-
-
 //* endpoints
 app.use('/api/v1',authRouter);
 app.use(globalError);

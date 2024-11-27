@@ -55,6 +55,7 @@ const userSchema = new mongoose.Schema({
     confirmedPassword : {
         type : String,
         required : [true , "Please , Confirm your password."],
+        select : false,
         validate : {
             validator : function(value) {
                 return value === this.password;
@@ -65,6 +66,16 @@ const userSchema = new mongoose.Schema({
 
 }
 ,{timestamps : true});
+
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next();
+    // Hashing user password
+    this.password = await bcrypt.hash(this.password, 12);
+    this.confirmedPassword = undefined;
+    next();
+  });
+  
+userSchema.methods
 
 const User = mongoose.model('User',userSchema);
 module.exports = User;
