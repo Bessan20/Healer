@@ -50,13 +50,14 @@ const server = app.listen(PORT , ()=>{
     console.log(`Successfully listening to port ${PORT}`);
 });
 
-
+//
 //*Unhandled rejection
 process.on("unhandledRejection",(err)=>{
     console.error(`unhandledrejection Errors : ${err.name} | ${err.message}`);
     server.close(()=>{
-        console.log(`Shutting down`);
+        console.log(`Shutting downn`);
         process.exit(1);
     })
     
 });
+
