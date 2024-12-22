@@ -49,7 +49,7 @@ const server = app.listen(PORT , ()=>{
 
     console.log(`Successfully listening to port ${PORT}`);
 });
- x = 5;
+ x = 4;
 //*Unhandled rejection
 process.on("unhandledRejection",(err)=>{
     console.error(`unhandledrejection Errors : ${err.name} | ${err.message}`);
