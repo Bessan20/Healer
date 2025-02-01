@@ -30,9 +30,12 @@ const loginWithId = asyncHandler(async(req,res,next)=>{
 
     const user = await User.findOne({nationalID}).select('+password');
 
-    if(!user || !(await user.comparePasswordInDb(password , user.password)))
-        return next(new apiError('Invalid national ID or password.', 400));
+    if(!user)
+        return next(new apiError('Invalid national ID.', 400));
 
+    if(!(await user.comparePasswordInDb(password , user.password)))
+    return next(new apiError('Invalid password.', 400));
+   
     const token = signToken(user._id);
     res.json({Status : true, Message :"Login successful", token});
 });
@@ -48,9 +51,13 @@ const loginWithEmail = asyncHandler(async(req,res,next)=>{
 
     const user = await User.findOne({email}).select('+password');
 
-    if(!user || !(await user.comparePasswordInDb(password , user.password)))
-        return next(new apiError('Invalid email or password.', 400));
-
+    if(!user) 
+        return next(new apiError('Invalid email.', 400));
+    
+    
+    if(!(await user.comparePasswordInDb(password , user.password)))
+        return next(new apiError('Invalid password.', 400));
+    
     const token = signToken(user._id);
     res.json({Status : true, Message :"Login successful", token});
     
