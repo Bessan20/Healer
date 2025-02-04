@@ -21,39 +21,50 @@ const signUp = asyncHandler(async (req, res, next) => {
     });
 });
 
-const loginWithId = asyncHandler(async (req, res, next) => {
-    const { nationalID, password } = req.body;
+const loginWithId = asyncHandler(async(req,res,next)=>{
 
-    if (!nationalID)
-         return next(new apiError('Please, enter your national ID.', 400));
-    if (!password)
-         return next(new apiError('Please, enter your account password.', 400));
+    const {nationalID , password } = req.body;
 
-    const user = await User.findOne({ nationalID }).select('+password');
+    if(!nationalID)
+        return next(new apiError('Please  , enter your national ID.', 400));
+    if(!password)
+        return next(new apiError('Please , enter your account password.', 400));
 
-    if (!user || !(await user.comparePasswordInDb(password, user.password)))
-        return next(new apiError('Invalid national ID or password.', 400));
+    const user = await User.findOne({nationalID}).select('+password');
 
+    if(!user)
+        return next(new apiError('Invalid national ID.', 400));
+
+    if(!(await user.comparePasswordInDb(password , user.password)))
+    return next(new apiError('Invalid password.', 400));
+   
     const token = signToken(user._id);
-    res.json({ Status: true, Message: 'Login successful', token });
+    res.json({Status : true, Message :"Login successful", token});
 });
 
-const loginWithEmail = asyncHandler(async (req, res, next) => {
-    const { email, password } = req.body;
+const loginWithEmail = asyncHandler(async(req,res,next)=>{
 
-    if (!email)
-         return next(new apiError('Please, enter your email.', 400));
-    if (!password)
-         return next(new apiError('Please, enter your account password.', 400));
+    const {email , password } = req.body;
 
-    const user = await User.findOne({ email }).select('+password');
+    if(!email)
+        return next(new apiError('Please  , enter your email.', 400));
+    if(!password)
+        return next(new apiError('Please , enter your account password.', 400));
 
-    if (!user || !(await user.comparePasswordInDb(password, user.password)))
-        return next(new apiError('Invalid email or password.', 400));
+    const user = await User.findOne({email}).select('+password');
 
+    if(!user) 
+        return next(new apiError('Invalid email.', 400));
+    
+    
+    if(!(await user.comparePasswordInDb(password , user.password)))
+        return next(new apiError('Invalid password.', 400));
+    
     const token = signToken(user._id);
-    res.json({ Status: true, Message: 'Login successful', token });
+    res.json({Status : true, Message :"Login successful", token});
+    
 });
+
 
 const forgotPassword = asyncHandler(async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email });
@@ -70,6 +81,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
 
     // Send the verification code via email
     const message = `Your password reset verification code is: ${verificationCode}. This code is valid for 10 minutes.`;
+
 
     try {
         await sendEmail({
@@ -89,6 +101,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
 
         return next(new apiError('There was an error sending the verification code. Please try again later.', 500));
     }
+
 });
 
 const resetPassword = asyncHandler(async (req, res, next) => {
