@@ -1,4 +1,4 @@
-console.log("hello");
+console.log("hello1");
 //* dotenv 
 require('dotenv').config({path : '.env'});//!must write the path
 
