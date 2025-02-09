@@ -10,6 +10,7 @@ const app = express();
 const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 
 //* import db connection
 const dbConnection = require('./config/dbConnection.js');
@@ -33,6 +34,8 @@ dbConnection();
 app.use(helmet());
 app.use(cors());
 app.use(express.static('./public'));
+app.use(bodyParser.json({extended:true}));
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.json({extended:true}));
 app.use(express.urlencoded({extended:true}));
 app.use(morgan("dev"));
