@@ -63,5 +63,6 @@ process.on("unhandledRejection",(err)=>{
     })
     
 });
+console.log(process.env.NODE_ENV)
 
 
