@@ -7,8 +7,15 @@ const signUpValidator = [
     check('name')
     .notEmpty()
     .withMessage('Name is required.')
-    .trim(),
-    check('nationalID')
+    .trim()
+    .custom((name) => {
+      const regex = /^[a-zA-Z\s]+$/;
+      if (!regex.test(name)) {
+        throw new Error('Invalid name , it should only contain letters and spaces.');
+      }
+      return true;
+    })
+    ,check('nationalID')
     .notEmpty()
     .withMessage('National id is required.')
     .trim()
