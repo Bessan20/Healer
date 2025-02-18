@@ -26,6 +26,7 @@ const signUpValidator = [
       ,check('mobilePhone')
       .notEmpty()
       .withMessage('Mobile phone number is required.')
+      .trim()
       .custom((mobilePhone)=> {
         const regex = /^[0-9]{11}$/;
         if (!regex.test(mobilePhone)) {
