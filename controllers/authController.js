@@ -137,11 +137,36 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     });
 });
 
+const protect = asyncHandler(async (req,res,next)=>{
+
+    //* 1)check if token exists , if exists get it
+    let token = "";
+      if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
+        token = req.headers.authorization.split(' ')[1];
+        console.log(token);
+        
+      }
+
+      if(!token)
+        return next(new apiError('You are not logged in! Please log in to get access.', 401));
+
+      //* 2)Verification token
+        const decoded = jwt.verify(token, process.env.SECRET_STR);
+        req.user = await User.findById(decoded.ID);
+        console.log(req.user._id);
+        console.log(req.user.nationalId);
+
+      
+    next();
+});
+
+
 module.exports = {
     signUp,
     loginWithId,
     loginWithEmail,
     forgotPassword,
     resetPassword,
+    protect
 
 };
