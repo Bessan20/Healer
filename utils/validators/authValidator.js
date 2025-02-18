@@ -4,6 +4,10 @@ const validatorMiddleware = require('../../middlewares/validatorMiddleware.js');
 
 const signUpValidator = [
 
+    check('name')
+    .notEmpty()
+    .withMessage('Name is required.')
+    .trim(),
     check('nationalID')
     .notEmpty()
     .withMessage('National id is required.')

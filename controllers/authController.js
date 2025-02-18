@@ -12,7 +12,7 @@ const signToken = (ID) => {
 
 const signUp = asyncHandler(async (req, res, next) => {
     const user = await User.create(req.body);
-    const token = signToken(user._id);
+    const token = signToken(user._id );
     res.status(201).json({
         Status: true,
         Message: 'User created successfully',
@@ -38,7 +38,7 @@ const loginWithId = asyncHandler(async(req,res,next)=>{
     if(!(await user.comparePasswordInDb(password , user.password)))
     return next(new apiError('Invalid password.', 400));
    
-    const token = signToken(user._id);
+    const token = signToken(user._id );
     res.json({Status : true, Message :"Login successful", token});
 });
 
@@ -137,8 +137,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     });
 });
 
-const protect = asyncHandler(async (req,res,next)=>{
-
+const protect = asyncHandler(async (req, res, next) => {
     //* 1)check if token exists , if exists get it
     let token = "";
       if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
@@ -154,12 +153,10 @@ const protect = asyncHandler(async (req,res,next)=>{
         const decoded = jwt.verify(token, process.env.SECRET_STR);
         req.user = await User.findById(decoded.ID);
         console.log(req.user._id);
-        console.log(req.user.nationalId);
+        console.log(req.user.nationalID);
 
-      
-    next();
+      next();
 });
-
 
 module.exports = {
     signUp,
