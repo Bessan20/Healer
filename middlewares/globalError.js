@@ -4,11 +4,20 @@ const globalError = ((err,req,res,next)=>{
     err.status = err.status || 'error';
     if(process.env.NODE_ENV === 'development')
         sendErrorForDev(err,res);
-    else
+    else {
+        if (err.name === "JsonWebTokenError")
+            handleJwtInvalidSignature();
        sendErrorForProd(err,res);
+    }
 
 });
 
+const handleJwtInvalidSignature = () =>{
+    return res.status(401).json({
+        status : 'error',
+        message : 'Invalid token. Please login again.'
+    });
+}
 const sendErrorForDev = (err,res) =>{
 
     return res.status(err.statusCode).json({

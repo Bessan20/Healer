@@ -152,9 +152,20 @@ const protect = asyncHandler(async (req, res, next) => {
       //* 2)Verification token
         const decoded = jwt.verify(token, process.env.SECRET_STR);
         req.user = await User.findById(decoded.ID);
-        console.log(req.user._id);
-        console.log(req.user.nationalID);
+        /*console.log(req.user._id);
+        console.log(req.user.nationalID);*/
 
+    //* 3)check if user exists
+    const currentUser = await User.findById(decoded.ID);
+    if(!currentUser)
+        return next(new apiError('User no longer exists.', 401));
+
+    //* 4)check if user changed password 
+    if(currentUser.passwordChangedAt && Date.now() - currentUser.passwordChangedAt < 10 * 60 * 1000){
+        return next(new apiError('Password has been changed recently. Please login again.', 401));
+    }
+
+    
       next();
 });
 
