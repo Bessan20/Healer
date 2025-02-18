@@ -7,6 +7,7 @@ const signUpValidator = [
     check('nationalID')
     .notEmpty()
     .withMessage('National id is required.')
+    .trim()
     .custom((val) =>
         User.findOne({ nationalID: val }).then((user) => {
           if (user) {
