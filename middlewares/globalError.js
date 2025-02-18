@@ -1,22 +1,20 @@
 const globalError = ((err,req,res,next)=>{
-
+const apiError = require('../utils/apiError');
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
     if(process.env.NODE_ENV === 'development')
         sendErrorForDev(err,res);
     else {
         if (err.name === "JsonWebTokenError")
-            handleJwtInvalidSignature();
+            err = handleJwtInvalidSignature();
        sendErrorForProd(err,res);
     }
 
 });
 
 const handleJwtInvalidSignature = () =>{
-    return res.status(401).json({
-        status : 'error',
-        message : 'Invalid token. Please login again.'
-    });
+    
+    return new apiError('Invalid token signature', 401);
 }
 const sendErrorForDev = (err,res) =>{
 
