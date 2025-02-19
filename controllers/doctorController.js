@@ -33,7 +33,7 @@ const loginWithIdDoctor = asyncHandler(async(req,res,next)=>{
 
     const doctor = await Doctor.findOne({nationalID}).select('+password');
 
-    if(!getAllDoctors)
+    if(!doctor)
         return next(new apiError('Invalid national ID.', 400));
 
     if(!(await doctor.comparePasswordInDb(password , doctor.password)))
