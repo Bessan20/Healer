@@ -1,11 +1,12 @@
 const asyncHandler = require('express-async-handler');
 const apiError = require('../utils/apiError.js');
+const { Model } = require('mongoose');
 
 const getAll = (Model) =>
     
     asyncHandler(async(req,res,next)=>{
 
-        const documents = await documents.find({});
+        const documents = await Model.find({});
         res.status(200).json({Status : 'success' ,'Number of documents' : documents.length , data : documents });
 
     });
