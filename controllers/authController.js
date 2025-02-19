@@ -1,4 +1,4 @@
-const {getAll} = require('./handlersFactory.js');
+const factory = require('./handlersFactory.js');
 const User = require('../models/userModel.js');
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
@@ -11,7 +11,7 @@ const signToken = (ID) => {
     });
 };
 
-const getAllUsers = getAll(User);
+const getAllUsers = factory.getAll(User);
 
 const signUp = asyncHandler(async (req, res, next) => {
     const user = await User.create(req.body);
