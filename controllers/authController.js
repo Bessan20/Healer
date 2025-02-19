@@ -1,3 +1,4 @@
+const {getAll} = require('./handlersFactory.js');
 const User = require('../models/userModel.js');
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
@@ -9,6 +10,8 @@ const signToken = (ID) => {
         expiresIn: process.env.LOGIN_EXPIRES,
     });
 };
+
+const getAllUsers = getAll(User);
 
 const signUp = asyncHandler(async (req, res, next) => {
     const user = await User.create(req.body);
@@ -170,6 +173,7 @@ const protect = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
+    getAllUsers,
     signUp,
     loginWithId,
     loginWithEmail,
