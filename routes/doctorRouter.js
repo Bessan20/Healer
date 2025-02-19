@@ -24,6 +24,6 @@ router.route('/signUp').post(signUpValidator, signUpDoctor);
 
 router.route('/loginWithId').post(loginWithIdDoctor);
 
-router.route('/loginWith').post(loginWithEmailDoctor);
+router.route('/loginWithEmail').post(loginWithEmailDoctor);
 
 module.exports = router;
