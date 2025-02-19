@@ -1,5 +1,5 @@
 const factory = require('./handlersFactory.js');
-const Doctor = require('../models/userModel.js');
+const Doctor = require('../models/doctorModel.js');
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const apiError = require('../utils/apiError.js');

@@ -9,7 +9,7 @@ const {
     loginWithIdDoctor,
     loginWithEmailDoctor,
 } =
-    require('../controllers/authController.js');
+    require('../controllers/doctorController.js');
 
 //*  import validator
 
