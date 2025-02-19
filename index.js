@@ -21,6 +21,7 @@ const logging = require('./middlewares/logging.js');
 //*import routes 
 const authRouter = require('./routes/authRouter.js');
 const profileRouter = require('./routes/profileRoute.js');
+const doctorRouter = require('./routes/doctorRouter.js');
 
 //*import global error
 const globalError = require('./middlewares/globalError.js');
@@ -46,6 +47,8 @@ app.use(logging);
 //* endpoints
 app.use('/api/v1',authRouter);
 app.use('/api/v1/userProfile',profileRouter);
+app.use('/api/v1/doctorProfile',doctorRouter);
+
 app.use(globalError);
 
 //*listening to port
