@@ -20,7 +20,7 @@ const doctorSchema = new mongoose.Schema({
     
     },
     email : {
-        type : string,
+        type : String,
         required : true,
         unique : true,
         
@@ -39,7 +39,7 @@ const doctorSchema = new mongoose.Schema({
     }, 
 
 },{timestamps : true});
-userSchema.pre('save', async function (next) {
+doctorSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
     // Hashing user password
     this.password = await bcrypt.hash(this.password, 12);
@@ -47,7 +47,7 @@ userSchema.pre('save', async function (next) {
     next();
   });
   
-userSchema.methods.comparePasswordInDb = function(pswd,pswdDB){
+doctorSchema.methods.comparePasswordInDb = function(pswd,pswdDB){
 
     return bcrypt.compare(pswd,pswdDB);
  
