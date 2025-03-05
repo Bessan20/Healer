@@ -7,6 +7,7 @@ const getAllAppointments = factory.getAll(Appointment);
 
 const createAppointment = asyncHandler(async(req,res,next)=>{
 
+    console.log(1);
     console.log(req.user._id);
     console.log(req.user.name);
     console.log(1)
