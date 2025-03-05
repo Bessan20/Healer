@@ -49,7 +49,7 @@ app.use(logging);
 app.use('/api/v1',authRouter);
 app.use('/api/v1/userProfile',profileRouter);
 app.use('/api/v1/doctor',doctorRouter);
-//app.use('/api/v1/appointment',appointmentRouter);
+app.use('/api/v1/appointment',appointmentRouter);
 
 app.use(globalError);
 
