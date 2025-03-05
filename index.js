@@ -22,7 +22,7 @@ const logging = require('./middlewares/logging.js');
 const authRouter = require('./routes/authRouter.js');
 const profileRouter = require('./routes/profileRoute.js');
 const doctorRouter = require('./routes/doctorRouter.js');
-const appointmentRouter = require('./routes/appointmentRouter.js');
+//const appointmentRouter = require('./routes/appointmentRouter.js');
 
 //*import global error
 const globalError = require('./middlewares/globalError.js');
@@ -49,7 +49,7 @@ app.use(logging);
 app.use('/api/v1',authRouter);
 app.use('/api/v1/userProfile',profileRouter);
 app.use('/api/v1/doctor',doctorRouter);
-app.use('/api/v1/appointment',appointmentRouter);
+//app.use('/api/v1/appointment',appointmentRouter);
 
 app.use(globalError);
 
