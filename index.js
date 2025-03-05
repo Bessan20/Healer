@@ -22,7 +22,7 @@ const logging = require('./middlewares/logging.js');
 const authRouter = require('./routes/authRouter.js');
 const profileRouter = require('./routes/profileRoute.js');
 const doctorRouter = require('./routes/doctorRouter.js');
-//const appointmentRouter = require('./routes/appointmentRouter.js');
+const appointmentRouter = require('./routes/appointmentRouter.js');
 
 //*import global error
 const globalError = require('./middlewares/globalError.js');

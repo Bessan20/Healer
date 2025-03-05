@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const factory = require('./handlerFactory');
+const factory = require('./handlersFactory');
 const Appointment = require('../models/appointmentModel');
 const apiError = require('../utils/apiError');
 
