@@ -9,6 +9,7 @@ const createAppointment = asyncHandler(async(req,res,next)=>{
 
     console.log(req.user._id);
     console.log(req.user.name);
+    console.log(1)
     res.status(201).send(req.user.name);
 });
 
