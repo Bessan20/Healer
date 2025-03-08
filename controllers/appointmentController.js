@@ -29,7 +29,17 @@ const createAppointment = asyncHandler(async(req,res,next)=>{
         return next(new apiError('Doctor not found',404));
     };
 
-    //* 5 - 
+    //* 5 - create appointment
+    const appointment = await Appointment.create({
+        
+        patientName : user.name,
+        patientMobile : user.mobilePhone,
+        patientId : user._id,
+        doctorName : doctor.name,
+        doctorId,
+        date,
+        queueNumber : 1,
+    });
 
     console.log(user.name);
 
