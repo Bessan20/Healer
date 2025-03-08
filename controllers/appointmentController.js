@@ -9,11 +9,14 @@ const getAllAppointments = factory.getAll(Appointment);
 
 const createAppointment = asyncHandler(async(req,res,next)=>{
 
-    const { doctorId , appointmentDate } = req.body;
+    //1 - Get doctorId and appointmentDate from req.body
+    //const { doctorId , appointmentDate } = req.body;
+
+    //2 - Get user from req.user
     const user = await User.findById(req.user._id);
 
-    console.log(req.user._id);
-    console.log(req.user.name);
+    console.log(user.name);
+
     
     res.status(201).send(req.user.name);
 });
