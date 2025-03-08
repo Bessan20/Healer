@@ -44,7 +44,12 @@ const createAppointment = asyncHandler(async(req,res,next)=>{
     console.log(user.name);
 
     
-    res.status(201).send(req.user.name);
+    res.status(201).json({
+        status : 'success',
+        data : {
+            appointment,
+        },
+    });
 });
 
 module.exports = {
