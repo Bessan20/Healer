@@ -25,6 +25,28 @@ const doctorSchema = new mongoose.Schema({
         unique : true,
         
     },
+    doctorSchedule: {
+        type: [
+  
+            {
+              
+                patientID: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'User',
+                },
+                Date: {
+                    type: Date,
+                    
+                },
+                queueNum: {
+                    type: Number,
+                },
+                
+            }
+        ],
+        _id: false,
+        default: [] 
+    },
 
     password : {
         type : String,
