@@ -66,6 +66,36 @@ const createAppointment = asyncHandler(async(req,res,next)=>{
     });
 });
 
+const cancelAppointment = asyncHandler(async(req,res,next)=>{
+    
+    //* 1 - Get appointmentId from req.body
+    const { appointmentId } = req.body;
+
+    //* 2- find appointment and delete it
+    const appointment = await Appointment.findByIdAndDelete(appointmentId);
+
+    //* 3 - check if appointment exists
+    if(!appointment){
+        return next(new apiError('Appointment not found',404));
+    };
+
+    //* 4 - find doctor and update doctorSchedule
+    const doctorId = appointment.doctorId;
+
+    const doctor = await Doctor.findByIdAndUpdate(
+        doctorId,
+        {
+            $pull: { doctorSchedule: {  patientID: appointment.patientId ,Date: appointment.date , queueNum : appointment.queueNumber } },
+        },
+        { new: true }
+    );
+
+    res.status(204).json({
+        status : 'Appointment deleted successfully', 
+        data : null,
+    });
+
+});
 module.exports = {
 
     getAllAppointments,
