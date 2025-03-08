@@ -1,7 +1,9 @@
 const asyncHandler = require('express-async-handler');
-const factory = require('./handlersFactory');
-const Appointment = require('../models/appointmentModel');
-const apiError = require('../utils/apiError');
+const factory = require('./handlersFactory.js');
+const Appointment = require('../models/appointmentModel.js');
+const User = require('../models/userModel.js');
+const Doctor = require('../models/doctorModel.js');
+const apiError = require('../utils/apiError.js');
 
 const getAllAppointments = factory.getAll(Appointment);
 
