@@ -40,9 +40,23 @@ const createAppointment = asyncHandler(async(req,res,next)=>{
         date,
         queueNumber : 1,
     });
+    
+    //* 6 - create appointment details
+    const appointmentDetails = {
 
-    console.log(user.name);
-
+        patientID : patientId,
+        Date : date,
+        queueNum : queueNumber,
+    };
+    
+    //* 7 - push appointment details to doctorSchedule
+    const doctorUpdated = await Doctor.findByIdAndUpdate(
+        doctorId,
+        {
+            $push: { doctorSchedule:appointmentDetails  },
+        },
+        { new: true }
+    );  
     
     res.status(201).json({
         status : 'success',
