@@ -44,9 +44,9 @@ const createAppointment = asyncHandler(async(req,res,next)=>{
     //* 6 - create appointment details
     const appointmentDetails = {
 
-        patientID : patientId,
-        Date : date,
-        queueNum : queueNumber,
+        patientID : appointment.patientId,
+        Date : appointment.date,
+        queueNum : appointment.queueNumber,
     };
     
     //* 7 - push appointment details to doctorSchedule
