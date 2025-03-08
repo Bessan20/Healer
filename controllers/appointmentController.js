@@ -9,11 +9,27 @@ const getAllAppointments = factory.getAll(Appointment);
 
 const createAppointment = asyncHandler(async(req,res,next)=>{
 
-    //1 - Get doctorId and appointmentDate from req.body
-    //const { doctorId , appointmentDate } = req.body;
+    //* 1 - Get doctorId and appointmentDate from req.body
+    const { doctorId , date } = req.body;
 
-    //2 - Get user from req.user
+
+    //* 2 - Get user from req.user
     const user = await User.findById(req.user._id);
+
+    //* 3 - Check if user exists
+    if(!user){
+        return next(new apiError('User not found',404));
+    };
+
+    //* 3 - Get doctor from doctorId
+    const doctor = await Doctor.findById(doctorId);
+
+    //* 4- Check if doctor exists
+    if(!doctor){
+        return next(new apiError('Doctor not found',404));
+    };
+
+    //* 5 - 
 
     console.log(user.name);
 

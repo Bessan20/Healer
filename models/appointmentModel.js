@@ -32,7 +32,7 @@ const appointmentSchema = new mongoose.Schema({
         ref : 'Doctor',
     },
 
-    appointmentDate : {
+    date : {
         
         type : Date,
         required : true,
