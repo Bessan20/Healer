@@ -38,6 +38,12 @@ const appointmentSchema = new mongoose.Schema({
         required : true,
     },
 
+    queueNumber : {
+        
+        type : Number,
+        required : true,
+    },
+
 },{timestamps : true});
 
 const Appointment = mongoose.model('Appointment', appointmentSchema);
