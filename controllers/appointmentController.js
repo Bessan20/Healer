@@ -100,4 +100,6 @@ module.exports = {
 
     getAllAppointments,
     createAppointment,
+    cancelAppointment,
+
 }
