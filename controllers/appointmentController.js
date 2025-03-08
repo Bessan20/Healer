@@ -91,7 +91,7 @@ const cancelAppointment = asyncHandler(async(req,res,next)=>{
     );
 
     res.status(204).json({
-        status : 'Appointment deleted successfully', 
+        Status : 'Appointment deleted successfully', 
     });
 
 });
