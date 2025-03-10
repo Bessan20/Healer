@@ -15,13 +15,15 @@ const createAppointmentValidator = [
     .notEmpty()
     .withMessage('Date is required.')
     .trim()
-    .isDate()
-    .withMessage('Invalid date.')
-    //ENSURE DATE IS NOT IN THE PAST
-    .custom(async (date) => {
-        if (new Date(date) < new Date()) {
+    .custom((date) => {
+        const parsedDate = new Date(date);
+        if (isNaN(parsedDate.getTime())) {
+            throw new Error('Invalid date.');
+        }
+        if (parsedDate < new Date()) {
             throw new Error('Date cannot be in the past.');
         }
+        return true;
     })
     ,validatorMiddleware]
 
