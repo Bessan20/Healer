@@ -12,7 +12,7 @@ const createAppointmentValidator = [
     .isMongoId()
     .withMessage('Invalid doctor id.')
     ,validatorMiddleware]
-modules.exports = {
+module.exports = {
 
     createAppointmentValidator
 }
