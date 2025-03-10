@@ -6,8 +6,9 @@ const {
     cancelAppointment,
 } = require('../controllers/appointmentController.js');
 
+const {createAppointmentValidator} = require('../utils/validators/appointmentValidator.js');
 const { protect } = require('../controllers/authController.js')
 router.route('/getAllAppointments').get(getAllAppointments);
-router.route('/createAppointment').post(protect,createAppointment);
+router.route('/createAppointment').post(protect,createAppointmentValidator,createAppointment);
 router.route('/cancelAppointment').delete(protect,cancelAppointment);
 module.exports = router;
