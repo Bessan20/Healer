@@ -11,6 +11,13 @@ const createAppointmentValidator = [
     .trim()
     .isMongoId()
     .withMessage('Invalid doctor id.')
+    ,check('date')
+    .notEmpty()
+    .withMessage('Date is required.')
+    .trim()
+    .isDate()
+    .withMessage('Invalid date.')
+
     ,validatorMiddleware]
 
 const cancelAppointmentValidator = [ 
