@@ -1,23 +1,30 @@
 const nodemailer = require('nodemailer');
 
-const sendEmail = (option) => {
-
+const sendEmail = async (option) => {
     const transporter = nodemailer.createTransport({
-        service: process.env.EMAIL_HOST,
-        port : process.env.EMAIL_PORT,
+        service: process.env.EMAIL_HOST, // "gmail" لأنه هتستخدم Gmail
+        port: process.env.EMAIL_PORT, // 587 لبروتوكول SMTP
         auth: {
-            user: process.env.EMAIL,
-            password: process.env.EMAIL_PASSWORD
-        }
-    })
+            user: process.env.EMAIL, // الإيميل اللي هتبعت منه
+            pass: process.env.EMAIL_PASSWORD, // App Password
+        },
+    });
 
     const emailOptions = {
         from: process.env.EMAIL,
         to: option.email,
         subject: option.subject,
-        message: option.message,
+        text: option.message,  // استخدم text أو html حسب الحاجة
+    };
+
+    try {
+        // إرسال الإيميل بشكل غير متزامن باستخدام await
+        await transporter.sendMail(emailOptions);
+        console.log("Email sent successfully!");
+    } catch (error) {
+        console.error("Error sending email:", error);
+        throw new Error("There was an error sending the email.");
     }
-    transporter.sendMail(emailOptions);
-}
+};
 
 module.exports = sendEmail;
