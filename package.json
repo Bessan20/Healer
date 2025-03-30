@@ -10,7 +10,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.2",
     "morgan": "^1.10.0",
-    "nodemailer": "^6.9.16",
+    "nodemailer": "^6.10.0",
     "validator": "^13.12.0"
   },
   "name": "healer",
@@ -21,12 +21,14 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  
   "keywords": [],
   "author": "",
   "engines": {
     "node": "20.17.0"
   },
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
 }
