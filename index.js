@@ -9,6 +9,7 @@ const app = express();
 const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 
 //* import db connection
 const dbConnection = require('./config/dbConnection.js');
@@ -19,6 +20,9 @@ const logging = require('./middlewares/logging.js');
 
 //*import routes 
 const authRouter = require('./routes/authRouter.js');
+const profileRouter = require('./routes/profileRoute.js');
+const doctorRouter = require('./routes/doctorRouter.js');
+const appointmentRouter = require('./routes/appointmentRouter.js');
 
 //*import global error
 const globalError = require('./middlewares/globalError.js');
@@ -32,6 +36,8 @@ dbConnection();
 app.use(helmet());
 app.use(cors());
 app.use(express.static('./public'));
+app.use(bodyParser.json({extended:true}));
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.json({extended:true}));
 app.use(express.urlencoded({extended:true}));
 app.use(morgan("dev"));
@@ -41,6 +47,10 @@ app.use(logging);
 
 //* endpoints
 app.use('/api/v1',authRouter);
+app.use('/api/v1/userProfile',profileRouter);
+app.use('/api/v1/doctor',doctorRouter);
+app.use('/api/v1/appointment',appointmentRouter);
+
 app.use(globalError);
 
 //*listening to port

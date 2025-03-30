@@ -6,6 +6,12 @@ const { type } = require('os');
 
 //National ID - Mobile Phone - Email address - password - confirm password
 const userSchema = new mongoose.Schema({
+
+    name : {
+
+        type : String,
+        required : true,
+    },
     nationalID : {
         type : String,
         required : [true , "Please , Enter your national id."],

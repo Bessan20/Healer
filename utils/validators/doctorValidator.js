@@ -1,5 +1,5 @@
 const {check , body} = require('express-validator');
-const User = require('../../models/userModel.js');
+const Doctor = require('../../models/doctorModel.js');
 const validatorMiddleware = require('../../middlewares/validatorMiddleware.js');
 
 const signUpValidator = [
@@ -20,8 +20,8 @@ const signUpValidator = [
     .withMessage('National id is required.')
     .trim()
     .custom((val) =>
-        User.findOne({ nationalID: val }).then((user) => {
-          if (user) {
+        Doctor.findOne({ nationalID: val }).then((doctor) => {
+          if (doctor) {
             return Promise.reject(new Error('This national id  is already exist.'));
           }
         })
@@ -51,8 +51,8 @@ const signUpValidator = [
       .isEmail()
       .withMessage('This e-mail is invalid.')
       .custom((val) =>
-        User.findOne({ email : val }).then((user) => {
-          if (user) {
+        Doctor.findOne({ email : val }).then((doctor) => {
+          if (doctor) {
             return Promise.reject(new Error('This e-mail is  already exist.'));
           }
         })

@@ -1,3 +1,4 @@
+const factory = require('./handlersFactory.js');
 const User = require('../models/userModel.js');
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
@@ -10,9 +11,11 @@ const signToken = (ID) => {
     });
 };
 
+const getAllUsers = factory.getAll(User);
+
 const signUp = asyncHandler(async (req, res, next) => {
     const user = await User.create(req.body);
-    const token = signToken(user._id);
+    const token = signToken(user._id );
     res.status(201).json({
         Status: true,
         Message: 'User created successfully',
@@ -38,7 +41,7 @@ const loginWithId = asyncHandler(async(req,res,next)=>{
     if(!(await user.comparePasswordInDb(password , user.password)))
     return next(new apiError('Invalid password.', 400));
    
-    const token = signToken(user._id);
+    const token = signToken(user._id );
     res.json({Status : true, Message :"Login successful", token});
 });
 
@@ -137,11 +140,45 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     });
 });
 
+const protect = asyncHandler(async (req, res, next) => {
+    //* 1)check if token exists , if exists get it
+    let token = "";
+      if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
+        token = req.headers.authorization.split(' ')[1];
+        console.log(token);
+        
+      }
+
+      if(!token)
+        return next(new apiError('You are not logged in! Please log in to get access.', 401));
+
+      //* 2)Verification token
+        const decoded = jwt.verify(token, process.env.SECRET_STR);
+        req.user = await User.findById(decoded.ID);
+        /*console.log(req.user._id);
+        console.log(req.user.nationalID);*/
+
+    //* 3)check if user exists
+    const currentUser = await User.findById(decoded.ID);
+    if(!currentUser)
+        return next(new apiError('User no longer exists.', 401));
+
+    //* 4)check if user changed password 
+    if(currentUser.passwordChangedAt && Date.now() - currentUser.passwordChangedAt < 10 * 60 * 1000){
+        return next(new apiError('Password has been changed recently. Please login again.', 401));
+    }
+
+    
+      next();
+});
+
 module.exports = {
+    getAllUsers,
     signUp,
     loginWithId,
     loginWithEmail,
     forgotPassword,
     resetPassword,
+    protect
 
 };
