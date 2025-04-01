@@ -8,7 +8,8 @@ const {
     signUpDoctor,
     loginWithIdDoctor,
     loginWithEmailDoctor,
-    getDoctorByName
+    getDoctorByName,
+    getDoctorBySpecialization
 } =
     require('../controllers/doctorController.js');
 
@@ -22,6 +23,8 @@ const {
 router.route('/getAllDoctors').get(getAllDoctors);
 
 router.route('/:name').get(getDoctorByName);
+
+router.route('/:specialization').get(getDoctorBySpecialization);
 
 router.route('/signUp').post(signUpValidator, signUpDoctor);
 
