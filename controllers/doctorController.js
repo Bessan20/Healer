@@ -69,10 +69,19 @@ const loginWithEmailDoctor = asyncHandler(async(req,res,next)=>{
 const getDoctorByName  = asyncHandler(async(req,res,next)=>{
 
     const {name} = req.query;
-    //search by first name with field name
     const doctor = await Doctor.find({name : { $regex: name.split('').join('.*'), $options: 'i' }}).select('name -_id');
     if(doctor.length === 0) 
         return next(new apiError('No doctors found with that name.', 404));
+    
+    res.status(200).json({Status : true , data : doctor});
+});
+
+const getDoctorBySpecialization = asyncHandler(async(req,res,next)=>{
+
+    const {specialization} = req.query;
+    const doctor = await Doctor.find({name : { $regex: specialization.split('').join('.*'), $options: 'i' }}).select('name specialization -_id');
+    if(doctor.length === 0) 
+        return next(new apiError('No doctors found with that specialization.', 404));
     
     res.status(200).json({Status : true , data : doctor});
 });
@@ -83,6 +92,7 @@ module.exports = {
     loginWithIdDoctor,
     loginWithEmailDoctor,
     getDoctorByName,
+    getDoctorBySpecialization
 
   
 };
