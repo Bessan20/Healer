@@ -68,7 +68,7 @@ const loginWithEmailDoctor = asyncHandler(async(req,res,next)=>{
 
 const getDoctorByName  = asyncHandler(async(req,res,next)=>{
 
-    const {name} = req.params;
+    const {name} = req.params.name;
     const doctor = await Doctor.find({name : {$regex : name , $options : 'i'}}); 
     if(!doctor) 
         return next(new apiError('No doctor found with that name', 404));
