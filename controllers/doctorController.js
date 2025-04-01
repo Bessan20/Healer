@@ -68,9 +68,9 @@ const loginWithEmailDoctor = asyncHandler(async(req,res,next)=>{
 
 const getDoctorByName  = asyncHandler(async(req,res,next)=>{
 
-    const {name} = req.params;
+    const {name} = req.query;
     //search by first name with field name
-    
+
 
 
     const doctor = await Doctor.findOne({name});
