@@ -57,7 +57,7 @@ const signUpValidator = [
           }
         })
       )
-      ,check('Specialization')
+      ,check('specialization')
       .notEmpty()
       .withMessage('Specialization is required.')
       .trim()
