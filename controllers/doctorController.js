@@ -68,11 +68,16 @@ const loginWithEmailDoctor = asyncHandler(async(req,res,next)=>{
 
 const getDoctorByName  = asyncHandler(async(req,res,next)=>{
 
-    const {name} = req.params.name;
-    const doctor = await Doctor.find({name : {$regex : name , $options : 'i'}}); 
+    const {name} = req.params;
+    //search by first name with field name
+    
+
+
+    const doctor = await Doctor.findOne({name});
     if(!doctor) 
-        return next(new apiError('No doctor found with that name', 404));
-    res.status(200).json({Status : 'success' , data : doctor})
+        return next(new apiError('No doctor found with that name.', 404));
+    
+    res.status(200).json({Status : true , data : doctor});
 });
 module.exports = {
 
