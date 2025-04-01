@@ -21,12 +21,14 @@ const {
 
 router.route('/getAllDoctors').get(getAllDoctors);
 
+router.route('/getDoctorByName/:name').get(getDoctorByName);
+
 router.route('/signUp').post(signUpValidator, signUpDoctor);
 
 router.route('/loginWithId').post(loginWithIdDoctor);
 
 router.route('/loginWithEmail').post(loginWithEmailDoctor);
 
-router.route('/getDoctorByName/:name').get(getDoctorByName);
+
 
 module.exports = router;
