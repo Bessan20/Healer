@@ -70,12 +70,9 @@ const getDoctorByName  = asyncHandler(async(req,res,next)=>{
 
     const {name} = req.query;
     //search by first name with field name
-
-
-
-    const doctor = await Doctor.findOne({name});
-    if(!doctor) 
-        return next(new apiError('No doctor found with that name.', 404));
+    const doctor = await Doctor.find({name : { $regex: name.split('').join('.*'), $options: 'i' }}).select('name -_id');
+    if(doctor.length === 0) 
+        return next(new apiError('No doctors found with that name.', 404));
     
     res.status(200).json({Status : true , data : doctor});
 });
