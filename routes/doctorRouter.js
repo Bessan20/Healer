@@ -21,7 +21,7 @@ const {
 
 router.route('/getAllDoctors').get(getAllDoctors);
 
-router.route('/getDoctorByName/:name').get(getDoctorByName);
+router.route('/:name').get(getDoctorByName);
 
 router.route('/signUp').post(signUpValidator, signUpDoctor);
 
