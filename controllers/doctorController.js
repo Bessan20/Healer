@@ -78,15 +78,21 @@ const getDoctorByName  = asyncHandler(async(req,res,next)=>{
 
 const getDoctorBySpecialization = asyncHandler(async(req,res,next)=>{
 
-    const {specialization} = req.query;
-    if (!specialization) {
-        return next(new apiError('Please provide a specialization to search for.', 400));
-    }
-    const doctor = await Doctor.find({ specialization: { $regex: specialization, $options: 'i' }}).select('name specialization -_id');
-    if(doctor.length === 0) 
+    const { specialization } = req.query;
+
+    const doctor = await Doctor.find({
+        specialization: { $regex: specialization, $options: 'i' }
+    }).select('name specialization -_id');
+
+    if (doctor.length === 0) {
         return next(new apiError('No doctors found with that specialization.', 404));
+    }
+
     
-    res.status(200).json({Status : true , data : doctor});
+    res.status(200).json({
+        Status: true,
+        data: doctor
+    });
 });
 module.exports = {
 

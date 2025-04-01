@@ -22,9 +22,9 @@ const {
 
 router.route('/getAllDoctors').get(getAllDoctors);
 
-router.route('/:name').get(getDoctorByName);
+router.route('/searchByName/:name').get(getDoctorByName);
 
-router.route('/:specialization').get(getDoctorBySpecialization);
+router.route('/searchBySpecialization/:specialization').get(getDoctorBySpecialization);
 
 router.route('/signUp').post(signUpValidator, signUpDoctor);
 
