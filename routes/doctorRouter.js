@@ -27,6 +27,6 @@ router.route('/loginWithId').post(loginWithIdDoctor);
 
 router.route('/loginWithEmail').post(loginWithEmailDoctor);
 
-router.route('/getDoctorByName').get(getDoctorByName);
+router.route('/getDoctorByName/:name').get(getDoctorByName);
 
 module.exports = router;
