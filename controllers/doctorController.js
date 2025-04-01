@@ -80,6 +80,7 @@ module.exports = {
     signUpDoctor,
     loginWithIdDoctor,
     loginWithEmailDoctor,
+    getDoctorByName,
 
   
 };
