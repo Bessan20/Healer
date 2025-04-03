@@ -23,7 +23,7 @@ const upload = multer({storage : myStorage});
 
 const getAllSocial = factory.getAll(Social);
 
-const createSocial = (upload.any('image'),asyncHandler(async (req, res, next) => {
+const createSocial = asyncHandler(async (req, res, next) => {
     
     
     res.status(201).json({
@@ -32,7 +32,7 @@ const createSocial = (upload.any('image'),asyncHandler(async (req, res, next) =>
        
     });
     }
-));
+);
 
 module.exports = {
 
