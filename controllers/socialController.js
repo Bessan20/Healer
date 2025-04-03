@@ -4,7 +4,7 @@ const factory = require("./handlersFactory.js");
 const apiError = require("../utils/apiError.js");
 const multer = require("multer");
 
-fileName = "";
+/*fileName = "";
 const myStorage = multer.diskStorage({
 
     destination : './uploads',
@@ -19,7 +19,7 @@ const myStorage = multer.diskStorage({
     }
 });
 
-const upload = multer({storage : myStorage});
+const upload = multer({storage : myStorage});*/
 
 const getAllSocial = factory.getAll(Social);
 
