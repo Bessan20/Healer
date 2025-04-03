@@ -17,8 +17,6 @@ cloudinary.config({
 const storage = multer.memoryStorage(); // Store files in memory for Cloudinary upload
 const upload = multer({storage});
 
-
-
 // Middleware to handle file uploads
 const uploadFile = upload.single("image"); // Expecting a single file with the field name "image"
 
@@ -36,22 +34,26 @@ const createSocial = asyncHandler(async (req, res, next) => {
     }
 
     // Upload the file to Cloudinary
-    const result = await cloudinary.uploader.upload_stream(
-        { folder: "uploads" }, // Folder in Cloudinary
-        (error, result) => {
-            if (error) {
-                return next(new apiError("Failed to upload image to Cloudinary.", 500));
+    // Upload the file to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            { folder: "uploads" }, // Folder in Cloudinary
+            (error, result) => {
+                if (error) {
+                    reject(new apiError("Failed to upload image to Cloudinary.", 500));
+                } else {
+                    resolve(result);
+                }
             }
-            return result;
-        }
-    ).end(req.file.buffer);
+        );
+        stream.end(req.file.buffer); // Send the file buffer to Cloudinary
+    });
 
-    console.log(req.body.email)
-    console.log(req.body.children)
-    console.log(result.secure_url) // Debugging line
-    // Create a new social document in the database
+    console.log("Cloudinary upload result:", result); // Debugging line
+
+    
     const social = await Social.create({
-        photo: result.secure_url, // The URL of the uploaded image from Cloudinary
+        image: result.secure_url, // The URL of the uploaded image from Cloudinary
         fullName: req.body.fullName,
         email: req.body.email,
         phone: req.body.phone,
