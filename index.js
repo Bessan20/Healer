@@ -24,6 +24,7 @@ const authRouter = require('./routes/authRouter.js');
 const profileRouter = require('./routes/profileRoute.js');
 const doctorRouter = require('./routes/doctorRouter.js');
 const appointmentRouter = require('./routes/appointmentRouter.js');
+const socialRouter = require('./routes/socialRouter.js');
 
 //*import global error
 const globalError = require('./middlewares/globalError.js');
@@ -51,6 +52,7 @@ app.use('/api/v1',authRouter);
 app.use('/api/v1/userProfile',profileRouter);
 app.use('/api/v1/doctor',doctorRouter);
 app.use('/api/v1/appointment',appointmentRouter);
+app.use('/api/v1/social',socialRouter);
 
 app.use(globalError);
 
