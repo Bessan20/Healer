@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const socialSchema = new mongoose.Schema({
 
-    photo : {
+    image : {
         type: String,
         required: true,
     },
