@@ -5,12 +5,13 @@ const router = express.Router();
 const {
 
     getAllSocial,
-    createSocial
+    createSocial,
+    uploadFile
 
 } = require('../controllers/socialController.js');
 
 router.route('/getAllSocial').get(getAllSocial);
 
-router.route('/createSocial').post(createSocial);
+router.route('/createSocial').post(uploadFile,createSocial);
 
 module.exports = router;
