@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Social = require("../models/socialModel.js");
-const factory = require("./handlerFactory.js");
+const factory = require("./handlersFactory.js");
 const apiError = require("../utils/apiError.js");
 const multer = require("multer");
 
