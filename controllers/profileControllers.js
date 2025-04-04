@@ -59,8 +59,10 @@ const updateProfile = asyncHandler(async(req,res,next)=>{
         
     }
 
+    //find profile id
+    const profileId = await Profile.findOne({userId});
     //if profile exist update it
-    const updatedProfile = await Profile.findByIdAndUpdate(profile._id, req.body, {
+    const updatedProfile = await Profile.findByIdAndUpdate(profileId._id, req.body, {
         new: true,
         runValidators: true,
     });
