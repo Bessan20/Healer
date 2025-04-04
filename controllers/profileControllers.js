@@ -3,7 +3,7 @@ const User = require('../models/userModel.js');
 
 const userProfile = asyncHandler(async (req, res, next) => {
 
-    res.status(200).send(`Hello ${req.user.name}, this is your profile`);
+    res.status(200).send(`Hello ${req.user.name}`);
 });
 const getProfile = asyncHandler(async(req,res,next) => {
 
