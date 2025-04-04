@@ -18,9 +18,22 @@ const getProfile = asyncHandler(async(req,res,next) => {
     });
 
 });
+
+const updateProfile = asyncHandler(async(req,res,next)=>{
+
+    res.status(201).json({
+        success: true,
+        data : {
+            name: req.user.name,
+            nationalID : req.user.nationalID,
+            mobilePhone: req.user.mobilePhone,
+            email: req.user.email,
+       }
+    });
+});
 module.exports = {
 
     userProfile,
-    getProfile
-
+    getProfile,
+    updateProfile
 }
