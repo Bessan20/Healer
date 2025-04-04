@@ -4,6 +4,7 @@ const profileSchema = new mongoose.Schema({
 
     image : {
         type: String,
+        default: 'https://res.cloudinary.com/dxq5jv7xg/image/upload/v1698531538/default_profile.png',
         
     },
     fullName: {
@@ -24,18 +25,23 @@ const profileSchema = new mongoose.Schema({
     },
     date: {
         type: Date,
+        default: Date.now,
         
     },
     gender: {
         type: String,
+        default :'female'
+
         
     },
     blood : {
         type: String,
+        default: 'O+'
         
     },
     notes : {
         type: String,
+        default: 'No notes available'
         
     },
     userId: {
