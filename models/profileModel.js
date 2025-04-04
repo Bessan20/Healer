@@ -43,3 +43,6 @@ const profileSchema = new mongoose.Schema({
         ref: 'User',
     },
 }, { timestamps: true });
+
+const Profile = mongoose.model('Profile', profileSchema);
+module.exports = Profile;

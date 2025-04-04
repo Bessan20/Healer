@@ -1,5 +1,9 @@
 const asyncHandler  = require('express-async-handler');
 const User = require('../models/userModel.js');
+const Profile = require('../models/profileModel.js');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+
 
 const userProfile = asyncHandler(async (req, res, next) => {
 
