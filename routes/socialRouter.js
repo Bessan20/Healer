@@ -10,8 +10,10 @@ const {
 
 } = require('../controllers/socialController.js');
 
+const { signUpValidator } = require('../utils/validators/socialValidator.js');
+
 router.route('/getAllSocial').get(getAllSocial);
 
-router.route('/createSocial').post(uploadFile,createSocial);
+router.route('/createSocial').post(uploadFile,signUpValidator,createSocial);
 
 module.exports = router;

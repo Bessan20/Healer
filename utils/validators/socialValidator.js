@@ -2,12 +2,24 @@ const {check , body} = require('express-validator');
 const Social = require('../../models/socialModel.js');
 const validatorMiddleware = require('../../middlewares/validatorMiddleware.js');
 
+/*const getvalidatorMiddleware = [
+
+    check('page')
+    .optional()
+    .isNumeric()
+    .withMessage('Page must be a number.'),
+    validatorMiddleware]*/
+
 const signUpValidator = [
 
-    check('image')
+    body('fullName')
     .notEmpty()
-    .withMessage('National id image is required.')
-    ,validatorMiddleware
+    .withMessage('name is required.'),
+    validatorMiddleware
 ];
 
-module.exports = signUpValidator;
+module.exports = {
+    
+    //getvalidatorMiddleware,
+    signUpValidator 
+}
