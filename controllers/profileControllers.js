@@ -1,6 +1,10 @@
 const asyncHandler  = require('express-async-handler');
 const User = require('../models/userModel.js');
 
+const userProfile = asyncHandler(async (req, res, next) => {
+
+    res.status(200).send(`Hello ${req.user.name}, this is your profile`);
+});
 const getProfile = asyncHandler(async(req,res,next) => {
 
     res.status(200).json({
@@ -16,6 +20,7 @@ const getProfile = asyncHandler(async(req,res,next) => {
 });
 module.exports = {
 
+    userProfile,
     getProfile
 
 }
