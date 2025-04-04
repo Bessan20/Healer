@@ -12,10 +12,7 @@ const validatorMiddleware = require('../../middlewares/validatorMiddleware.js');
 
 const signUpValidator = [
 
-    check('image')
-    .notEmpty()
-    .withMessage('Your national id image is required.')
-    ,check('fullName')
+    check('fullName')
     .notEmpty()
     .withMessage('Your full name is required.')
     .trim()
