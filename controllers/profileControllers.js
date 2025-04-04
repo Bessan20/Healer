@@ -80,7 +80,12 @@ const updateProfile = asyncHandler(async(req,res,next)=>{
     res.status(200).json({
         success: true,
         message: "Profile updated successfully",
+        data : {
+            profile: updatedProfile,
+            user: updatedUser,
+        },
     });
+
 
 });
 module.exports = {
