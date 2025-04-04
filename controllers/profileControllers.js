@@ -68,10 +68,10 @@ const updateProfile = asyncHandler(async(req,res,next)=>{
     //update user data
 
     const updatedUser = await User.findByIdAndUpdate(req.user._id,{
-        name: req.body.fullName,
-        nationalID: req.body.nationalID,
-        mobilePhone: req.body.mobilePhone,
-        email: req.body.email,
+        name: req.body.fullName || req.user.name,
+        nationalID: req.body.nationalID || req.user.nationalID,
+        mobilePhone: req.body.phone || req.user.mobilePhone,
+        email: req.body.email || req.user.email,
     }, {
         new: true,
         runValidators: true,
