@@ -42,7 +42,7 @@ const signUpValidator = [
     .withMessage('Your children status is required.')
     ,check('job')
     .notEmpty()
-    .withMessage('Your job title status is required.')
+    .withMessage('Your job title  is required.')
     .trim()
     ,validatorMiddleware
 ];
