@@ -12,7 +12,7 @@ const validatorMiddleware = require('../../middlewares/validatorMiddleware.js');
 
 const signUpValidator = [
 
-    body('fullName')
+    check('fullName')
     .notEmpty()
     .withMessage('name is required.'),
     validatorMiddleware
