@@ -43,23 +43,39 @@ const updateProfile = asyncHandler(async(req,res,next)=>{
 
     const userId = req.user._id;
 
-    //get req.body data
-    const data = req.body;
 
     //if profile not exist create new one
     const profile = await Profile.findOne({userId});
     
     if(!profile) {
 
-       /* const newProfile = await Profile.create({
+       const newProfile = await Profile.create({
             fullName : req.user.name,
             nationalID : req.user.nationalID,
             email : req.user.email,
             phone : req.user.mobilePhone,
             userId : req.user._id,
-        });*/
-        return next(new apiError('Profile not found', 404));
+        });
+        
     }
+
+    //if profile exist update it
+    const updatedProfile = await Profile.findByIdAndUpdate(profile._id, req.body, {
+        new: true,
+        runValidators: true,
+    });
+
+    //update user data
+
+    const updatedUser = await User.findByIdAndUpdate(req.user._id,{
+        name: req.body.fullName,
+        nationalID: req.body.nationalID,
+        mobilePhone: req.body.mobilePhone,
+        email: req.body.email,
+    }, {
+        new: true,
+        runValidators: true,
+    });
 
     res.status(200).json({
         success: true,
