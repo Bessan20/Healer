@@ -55,9 +55,31 @@ const updateProfile = asyncHandler(async(req,res,next)=>{
         
     }
 
+    // If an image is provided, upload it to Cloudinary or process it
+    if (req.file) {
+        const result = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+                { folder: 'uploads' },
+                (error, result) => {
+                    if (error) {
+                        reject(new Error('Failed to upload image to Cloudinary.'));
+                    } else {
+                        resolve(result);
+                    }
+                }
+            );
+            stream.end(req.file.buffer);
+        });
+
+       const imageUrl = result.secure_url; // Store the uploaded image URL
+    }
     
     
-    const updatedProfile = await Profile.findByIdAndUpdate(profile._id, req.body, {
+    const updatedProfile = await Profile.findByIdAndUpdate(profile._id, 
+        {
+        ...req.body,
+      ...(imageUrl && { image: imageUrl }), // Only update the image if it exists
+    }, {
         new: true,
         runValidators: true,
     });
