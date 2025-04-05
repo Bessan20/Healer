@@ -4,9 +4,9 @@ const validatorMiddleware = require('../../middlewares/validatorMiddleware.js');
 
 const userProfileValidator = [
     
-    check('fullName')
+    body('fullName')
     .trim()
-    ,check('nationalID')
+    ,body('nationalID')
     //national id must be 11 digits
     .custom((nationalID)=> {
         const regex = /^[0-9]{14}$/;
@@ -16,11 +16,11 @@ const userProfileValidator = [
         return true;
       })
       .trim()
-      ,check('email')
+      ,body('email')
     .isEmail()
     .withMessage('Invalid email format')
     .trim()
-    ,check('phone')
+    ,body('phone')
     //phone number must be 11 digits
     .custom((phone)=> {
         const regex = /^[0-9]{11}$/;
@@ -30,13 +30,13 @@ const userProfileValidator = [
         return true;
       })
       .trim()
-    ,check('gender')
+    ,body('gender')
     .trim()
-    ,check('blood')
+    ,body('blood')
     .trim()
-    ,check('notes')
+    ,body('notes')
     .trim()
-    ,check('date')
+    ,body('date')
     .custom((date)=> {
         const regex = /^\d{4}-\d{2}-\d{2}$/;
         if (!regex.test(date)) {
