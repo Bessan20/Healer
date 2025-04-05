@@ -55,6 +55,7 @@ const updateProfile = asyncHandler(async(req,res,next)=>{
         
     }
 
+    let imageUrl = ''; 
     // If an image is provided, upload it to Cloudinary or process it
     if (req.file) {
         const result = await new Promise((resolve, reject) => {
@@ -71,9 +72,9 @@ const updateProfile = asyncHandler(async(req,res,next)=>{
             stream.end(req.file.buffer);
         });
 
-       
+       imageUrl = result.secure_url; // Store the uploaded image URL
     }
-    const imageUrl = result.secure_url; // Store the uploaded image URL
+    
     
     const updatedProfile = await Profile.findByIdAndUpdate(profile._id, 
         {
