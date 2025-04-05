@@ -71,9 +71,9 @@ const updateProfile = asyncHandler(async(req,res,next)=>{
             stream.end(req.file.buffer);
         });
 
-       const imageUrl = result.secure_url; // Store the uploaded image URL
+       
     }
-    
+    const imageUrl = result.secure_url; // Store the uploaded image URL
     
     const updatedProfile = await Profile.findByIdAndUpdate(profile._id, 
         {
