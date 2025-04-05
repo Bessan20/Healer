@@ -7,6 +7,6 @@ router.route('/userProfile').get(protect, userProfile);
 
 router.route('/getProfile').get(protect, getProfile);
 
-router.route('/updateProfile').patch(protect, updateProfile);
+router.route('/updateProfile').patch(protect,updateProfile);
 
 module.exports = router;

@@ -52,15 +52,11 @@ const updateProfile = asyncHandler(async(req,res,next)=>{
             phone: req.user.mobilePhone,
             userId: req.user._id,
         });
-        return res.status(201).json({
-            success: true,
-            message: "Profile created successfully",
-            data: {
-                profile,
-            },
-        });
+        
     }
 
+    
+    
     const updatedProfile = await Profile.findByIdAndUpdate(profile._id, req.body, {
         new: true,
         runValidators: true,
@@ -75,13 +71,14 @@ const updateProfile = asyncHandler(async(req,res,next)=>{
         new: true,
         runValidators: true,
     });
-
+    console.log(profile._id);
+    console.log(req.body);
     res.status(200).json({
         success: true,
         message: "Profile updated successfully",
         data: {
             profile: updatedProfile,
-            user: updatedUser,
+           user: updatedUser,
         },
     });
 
