@@ -10,7 +10,7 @@ const userProfileValidator = [
     //national id must be 11 digits
     .custom((nationalID)=> {
         const regex = /^[0-9]{14}$/;
-        if (!regex.test(phone)) {
+        if (!regex.test(nationalID)) {
           throw new Error('Invalid national id , it should be 14 digits.');
         }
         return true;
