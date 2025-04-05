@@ -9,39 +9,47 @@ const profileSchema = new mongoose.Schema({
     },
     fullName: {
         type: String,
+        trim : true
         
     },
     nationalID: {
         type: String,
-        
+        trim : true,
+          
     },
     email: {
         type: String,
-        
+        trim : true,
     },
     phone: {
         type: String,
+        trim : true,
+        
         
     },
     date: {
         type: Date,
         default: Date.now,
+        trim : true
         
     },
     gender: {
         type: String,
-        default :'female'
+        default :'female',
+        trim : true
 
         
     },
     blood : {
         type: String,
-        default: 'O+'
+        default: 'O+',
+        trim : true
         
     },
     notes : {
         type: String,
-        default: 'No notes available'
+        default: 'No notes available',
+        trim : true
         
     },
     userId: {
