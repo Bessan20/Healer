@@ -7,7 +7,7 @@ const getAll = (Model) =>
     asyncHandler(async(req,res,next)=>{
 
         const documents = await Model.find({});
-        res.status(200).json({Status : 'success' ,'Number of documents' : documents.length , data : documents });
+        res.status(200).json({Status : 'Success' ,'Number of documents' : documents.length , data : documents });
 
     });
 
