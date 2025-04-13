@@ -1,5 +1,7 @@
-// Load environment variables from .env file
-require('dotenv').config({ path: '.env' });
+//console.log("Hello world");
+//* dotenv 
+require('dotenv').config({path : '.env'});//!must write the path
+
 
 // Import Express and create an app instance
 const express = require('express');
@@ -65,14 +67,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(logging);
 
-// Define API endpoints
-app.use('/api/v1', authRouter);
-app.use('/api/v1/profile', profileRouter);
-app.use('/api/v1/doctor', doctorRouter);
-app.use('/api/v1/appointment', appointmentRouter);
-app.use('/api/v1/social', socialRouter);
 
-// Apply global error handler
+
+//* endpoints
+app.use('/api/v1',authRouter);
+app.use('/api/v1/profile',profileRouter);
+app.use('/api/v1/doctor',doctorRouter);
+app.use('/api/v1/appointment',appointmentRouter);
+app.use('/api/v1/social',socialRouter);
+
+
 app.use(globalError);
 
 // Start the server on the specified port

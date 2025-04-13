@@ -57,6 +57,10 @@ const signUpValidator = [
           }
         })
       )
+      ,check('specialization')
+      .notEmpty()
+      .withMessage('Specialization is required.')
+      .trim()
       ,check('password')
       .notEmpty()
       .withMessage('Password is required.')
