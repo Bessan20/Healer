@@ -4,7 +4,7 @@ const profileSchema = new mongoose.Schema({
 
     image : {
         type: String,
-        default: 'https://res.cloudinary.com/dxq5jv7xg/image/upload/v1698531538/default_profile.png',
+        default: 'https://res.cloudinary.com/dfjllx0gl/image/upload/v1744907351/default_ihvlie.jpg',
         
     },
     fullName: {
