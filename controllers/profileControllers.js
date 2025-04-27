@@ -98,11 +98,11 @@ const updateProfile = asyncHandler(async(req,res,next)=>{
     console.log(req.body);
     res.status(200).json({
         success: true,
-        message: "Profile updated successfully",
+        message: "Profile updated successfully"/*,
         data: {
             profile: updatedProfile,
            user: updatedUser,
-        },
+        },*/
     });
 
 
@@ -159,11 +159,11 @@ const updateImageProfile = asyncHandler(async(req,res,next)=>{
     console.log(req.body);
     res.status(200).json({
         success: true,
-        message: "Profile updated successfully",
+        message: "Profile image updated successfully"/*,
         data: {
             updatedProfile,
             
-        }
+        }*/
     });
 
 
