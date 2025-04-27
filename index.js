@@ -1,4 +1,4 @@
-//welcome to healer app
+//welcome to healer application
 //* dotenv 
 require('dotenv').config({path : '.env'});//!must write the path
 
