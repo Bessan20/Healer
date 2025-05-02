@@ -27,6 +27,10 @@ const healthSchema = new mongoose.Schema({
         unique : [true , 'File number already exists.'],
         trim : true,
     },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
 
 } , {
     timestamps: true });
