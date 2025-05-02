@@ -174,9 +174,7 @@ const getLastImage = asyncHandler(async(req,res,next)=>{
     const userId = req.user._id;
 
     let profile = await Profile.findOne({ userId });
-    if(!profile.image) {
-        return next(new apiError("No image found", 404));
-    }
+    
     res.status(200).json({
         success: true,
         data: {
