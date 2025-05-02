@@ -171,7 +171,16 @@ const updateImageProfile = asyncHandler(async(req,res,next)=>{
 
 const getLastImage = asyncHandler(async(req,res,next)=>{
 
-    res.send("getLastImage");
+    const userId = req.user._id;
+
+    let profile = await Profile.findOne({ userId });
+    res.status(200).json({
+        success: true,
+        data: {
+            image: profile.image  ,
+            
+        }
+    });
 });
 module.exports = {
 
