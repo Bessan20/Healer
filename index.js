@@ -30,6 +30,7 @@ const profileRouter = require('./routes/profileRoute.js');
 const doctorRouter = require('./routes/doctorRouter.js');
 const appointmentRouter = require('./routes/appointmentRouter.js');
 const socialRouter = require('./routes/socialRouter.js');
+const healthRouter = require('./routes/healthRouter.js');
 
 // Import global error handler
 const globalError = require('./middlewares/globalError.js');
@@ -74,6 +75,7 @@ app.use('/api/v1/profile',profileRouter);
 app.use('/api/v1/doctor',doctorRouter);
 app.use('/api/v1/appointment',appointmentRouter);
 app.use('/api/v1/social',socialRouter);
+app.use('/api/v1/healthInsurance',healthRouter);
 
 
 app.use(globalError);
