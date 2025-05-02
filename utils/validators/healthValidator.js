@@ -5,6 +5,10 @@ const Health = require('../../models/healthModel.js');
 
 const createHealthValidator = [ 
 
+    check('headFamily')
+    .notEmpty()
+    .withMessage('Head of the family name is required.')
+    .trim()
 
     ,validatorMiddleware]
 
