@@ -168,6 +168,11 @@ const updateImageProfile = asyncHandler(async(req,res,next)=>{
 
 
 });
+
+const getLastImage = asyncHandler(async(req,res,next)=>{
+
+    res.send("getLastImage");
+});
 module.exports = {
 
     userProfile,
@@ -175,4 +180,5 @@ module.exports = {
     updateProfile,
     uploadFile,
     updateImageProfile,
+    getLastImage,
 }
