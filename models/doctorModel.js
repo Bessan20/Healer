@@ -87,6 +87,20 @@ const doctorSchema = new mongoose.Schema({
     },
     workingHours : {
 
+        type : [
+            {
+                day: {
+                    type: String,
+                    enum: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                },
+                start: {
+                    type: String,
+                },
+                end: {
+                    type: String,
+                },
+            }
+        ]
     },
     password : {
         type : String,
