@@ -3,18 +3,25 @@ const bcrypt = require('bcryptjs');
 
 const doctorSchema = new mongoose.Schema({
 
+    image : {
+
+        type : String,
+        default: 'https://res.cloudinary.com/dfjllx0gl/image/upload/v1744907351/default_ihvlie.jpg',
+    },
     name : {
         
         type : String,
         required : true,  
+        trim : true,
     },
 
     nationalID : {
         type : String,
         required : true,
         unique : true,
+        trim : true,
     },
-    mobilePhone : {
+   /* mobilePhone : {
         type : String,
         required : true,
     
@@ -24,7 +31,7 @@ const doctorSchema = new mongoose.Schema({
         required : true,
         unique : true,
         
-    },
+    },*/
     specialization : {
         type : String,
         required : true,
@@ -53,6 +60,34 @@ const doctorSchema = new mongoose.Schema({
         default: [] 
     },
 
+    exp : {
+        type : Number,
+        default : 1,
+    },
+
+    rate : {
+        type : Number,
+        default : 1,
+    },
+
+    reviews : {
+        
+        
+        type : [
+            {
+                
+                review: {
+                    type: String,
+                },
+                
+            }
+        ],
+        _id: false,
+        default : [],
+    },
+    workingHours : {
+
+    },
     password : {
         type : String,
         required : true,
