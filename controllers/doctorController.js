@@ -51,7 +51,7 @@ const signUpDoctor = asyncHandler(async (req, res, next) => {
 
        imageUrl = result.secure_url; // Store the uploaded image URL
     }
-    const doctor = await Doctor.create(...req.body, {image : imageUrl});
+    const doctor = await Doctor.create({...req.body, image : imageUrl});
     const token = signToken(doctor._id );
 
     res.status(201).json({
