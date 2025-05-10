@@ -85,7 +85,7 @@ const doctorSchema = new mongoose.Schema({
         _id: false,
         default : [],
     },
-    workingHours : {
+    /*workingHours : {
 
         type : [
             {
@@ -101,7 +101,7 @@ const doctorSchema = new mongoose.Schema({
                 },
             }
         ]
-    },
+    },*/
     password : {
         type : String,
         required : true,
