@@ -3,6 +3,25 @@ const Doctor = require('../models/doctorModel.js');
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const apiError = require('../utils/apiError.js');
+
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+});
+
+// Configure Multer for file uploads
+const storage = multer.memoryStorage(); // Store files in memory for Cloudinary upload
+const upload = multer({storage});
+
+// Middleware to handle file uploads
+const uploadFile = upload.single("image"); // Expecting a single file with the field name "image"
+
 const signToken = (ID) => {
     return jwt.sign({ ID }, process.env.SECRET_STR, {
         expiresIn: process.env.LOGIN_EXPIRES,
@@ -12,8 +31,29 @@ const signToken = (ID) => {
 const getAllDoctors = factory.getAll(Doctor);
 
 const signUpDoctor = asyncHandler(async (req, res, next) => {
-    const doctor = await Doctor.create(req.body);
+
+    let imageUrl = ''; 
+    // If an image is provided, upload it to Cloudinary or process it
+    if (req.file) {
+        const result = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+                { folder: 'uploads' },
+                (error, result) => {
+                    if (error) {
+                        reject(new Error('Failed to upload image to Cloudinary.'));
+                    } else {
+                        resolve(result);
+                    }
+                }
+            );
+            stream.end(req.file.buffer);
+        });
+
+       imageUrl = result.secure_url; // Store the uploaded image URL
+    }
+    const doctor = await Doctor.create(...req.body, {image : imageUrl});
     const token = signToken(doctor._id );
+
     res.status(201).json({
         Status: true,
         Message: 'Doctor account  created successfully',
@@ -43,7 +83,7 @@ const loginWithIdDoctor = asyncHandler(async(req,res,next)=>{
     res.json({Status : true, Message :"Login successful", token});
 });
 
-const loginWithEmailDoctor = asyncHandler(async(req,res,next)=>{
+/*const loginWithEmailDoctor = asyncHandler(async(req,res,next)=>{
 
     const {email , password } = req.body;
 
@@ -64,7 +104,7 @@ const loginWithEmailDoctor = asyncHandler(async(req,res,next)=>{
     const token = signToken(doctor._id);
     res.json({Status : true, Message :"Login successful", token});
     
-});
+});*/
 
 const getDoctorByName  = asyncHandler(async(req,res,next)=>{
 
@@ -99,9 +139,10 @@ module.exports = {
     getAllDoctors,
     signUpDoctor,
     loginWithIdDoctor,
-    loginWithEmailDoctor,
+    /*loginWithEmailDoctor,*/
     getDoctorByName,
-    getDoctorBySpecialization
+    getDoctorBySpecialization,
+    uploadFile
 
   
 };
