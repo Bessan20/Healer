@@ -54,6 +54,7 @@ const signUpDoctor = asyncHandler(async (req, res, next) => {
     const doctor = await Doctor.create({...req.body, image : imageUrl});
     const token = signToken(doctor._id );
 
+    doctor.password = undefined;
     res.status(201).json({
         Status: true,
         Message: 'Doctor account  created successfully',
