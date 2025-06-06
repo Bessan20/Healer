@@ -75,12 +75,11 @@ const userSchema = new mongoose.Schema({
     passwordChangedAt: {
         type:Date
     },
-    passwordResetToken: {
-        type: String,
-      },
-      passwordResetTokenExpires: {
-        type: Date,
-      },
+
+    passwordChangeAt: String,
+    passwordResetCode: String,
+    passwordResetExpires: Date,
+    passwordResetVerified: Boolean,
     }, { timestamps: true });
 
 
@@ -98,18 +97,18 @@ userSchema.methods.comparePasswordInDb = function(pswd,pswdDB){
  
 }
 
-userSchema.methods.createResetPasswordToken = function () {
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    this.passwordResetToken = crypto
-      .createHash('sha256')
-      .update(resetToken)
-      .digest('hex');
-    this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
+// userSchema.methods.createResetPasswordToken = function () {
+//     const resetToken = crypto.randomBytes(32).toString('hex');
+//     this.passwordResetToken = crypto
+//       .createHash('sha256')
+//       .update(resetToken)
+//       .digest('hex');
+//     this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
 
-    console.log(resetToken, this.passwordResetToken);
+//     console.log(resetToken, this.passwordResetToken);
 
-    return resetToken;
-};
+//     return resetToken;
+// };
 
 const User = mongoose.model('User',userSchema);
 module.exports = User;

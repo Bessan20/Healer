@@ -79,8 +79,34 @@ const signUpValidator = [
     ,validatorMiddleware
 ];
 
+const resetValidator = [
+  check("newPassword")
+    .notEmpty()
+    .withMessage("Password required")
+    .isLength({ min: 8 })
+    .withMessage("password must be at least 6 characters")
+    .custom((newPassword, { req }) => {
+      if (newPassword !== req.body.passwordConfirm) {
+        throw new Error("Password Confirmation incorrect");
+      }
+const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+
+      if (!regex.test(newPassword)) {
+        throw new Error(
+          'Password should be between (8-15) characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
+        );
+      }
+      return true;
+    }),
+
+  check("passwordConfirm")
+    .notEmpty()
+    .withMessage("Password Confirmation required"),
+  validatorMiddleware,
+];
+
 module.exports = {
 
     signUpValidator,
-
+resetValidator
 };
