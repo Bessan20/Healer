@@ -1,4 +1,4 @@
-//* dotenv 
+//* new dotenv 
 require('dotenv').config({path : '.env'});//!must write the path
 
 
