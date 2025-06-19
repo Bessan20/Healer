@@ -19,7 +19,7 @@ router.route("/getMyMedicine").get(protect, getMyMedicines);
 router.route("/createMedicne").post(protectDoctor, createMedicines);
 
 // Route to cancel an appointment
-router.route("/updateStartTime").put(protect, adjustMedicineTime);
+router.route("/updateStartTime/:medicineId").put(protect, adjustMedicineTime);
 
 // Export the router
 module.exports = router;
