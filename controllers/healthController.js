@@ -42,7 +42,7 @@ const getHealthInsuranceByUser = asyncHandler(async (req, res, next) => {
 const deleteHealthInsurance = asyncHandler(async (req, res, next) => {
     const userId = req.user._id; // Assuming you have the user ID in req.user
     
-    const healthInsurance = await Health.findOneAndDelete(userId);
+    const healthInsurance = await Health.findOneAndDelete({ userId: userId });
     if (!healthInsurance) {
         return next(new apiError('Health insurance not found', 404));
     }
