@@ -46,11 +46,10 @@ const deleteHealthInsurance = asyncHandler(async (req, res, next) => {
     if (!healthInsurance) {
         return next(new apiError('Health insurance not found', 404));
     }
-    res.status(204).json({
-        status: 'success',
-        data: null
-        
-    });
+    res.status(200).json({
+    status: 'success',
+    message: 'Health insurance deleted successfully'
+});
 });
 
 module.exports = {
