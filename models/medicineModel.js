@@ -31,6 +31,12 @@ const medicineSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    image: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dfjllx0gl/image/upload/v1744907351/default_ihvlie.jpg",
+    },
+    notes: String,
   },
   { timestamps: true }
 );

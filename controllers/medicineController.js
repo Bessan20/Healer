@@ -1,5 +1,24 @@
 const asyncHandler = require("express-async-handler");
 const Medicine = require("../models/medicineModel");
+const Notification = require("../models/allNotificationModel");
+
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
+});
+
+// Configure Multer for file uploads
+const storage = multer.memoryStorage(); // Store files in memory for Cloudinary upload
+const upload = multer({ storage });
+
+// Middleware to handle file uploads
+exports.uploadFile = upload.single("image"); // Expecting a single file with the field name "image"
 
 function isValidTimeFormat(timeStr) {
   return /^([01]\d|2[0-3]):([0-5]\d)$/.test(timeStr);
@@ -19,55 +38,90 @@ function generateTimes(startTimeStr, numberOfTimes) {
   return times;
 }
 
-exports.createMedicines = asyncHandler(async (req, res, next) => {
+// ✅ دالة الإنشاء
+exports.createMedicine = asyncHandler(async (req, res, next) => {
   const doctorId = req.doctor._id;
-  const medicinesData = req.body.medicines;
+  const {
+    medicineName,
+    medicineDosage,
+    NumberOfTimes,
+    time,
+    patientId,
+    notes,
+  } = req.body;
 
-  if (!Array.isArray(medicinesData) || medicinesData.length === 0) {
+  // ✅ التحقق من الوقت
+  if (!isValidTimeFormat(time)) {
     return res.status(400).json({
-      message: "You must provide an array of medicines.",
+      message: `Invalid time format "${time}". Expected HH:mm.`,
     });
   }
 
-  const medicinesToInsert = [];
-
-  for (const med of medicinesData) {
-    const { time, NumberOfTimes } = med;
-
-    // Validate time format
-    if (!isValidTimeFormat(time)) {
-      return res.status(400).json({
-        message: `Invalid time format "${time}". Expected HH:mm (e.g., 09:30).`,
-      });
-    }
-
-    // Validate NumberOfTimes
-    if (
-      !Number.isInteger(NumberOfTimes) ||
-      NumberOfTimes <= 0 ||
-      NumberOfTimes > 24 ||
-      24 % NumberOfTimes !== 0
-    ) {
-      return res.status(400).json({
-        message: `Invalid NumberOfTimes "${NumberOfTimes}". Must be a positive integer ≤ 24 and divide 24 evenly.`,
-      });
-    }
-
-    const times = generateTimes(time, NumberOfTimes);
-
-    medicinesToInsert.push({
-      ...med,
-      doctorId,
-      time: times,
+  // ✅ التحقق من عدد المرات
+  const numTimes = Number(NumberOfTimes);
+  if (
+    !Number.isInteger(numTimes) ||
+    numTimes <= 0 ||
+    numTimes > 24 ||
+    24 % numTimes !== 0
+  ) {
+    return res.status(400).json({
+      message: `Invalid NumberOfTimes "${NumberOfTimes}". Must be a positive integer ≤ 24 and divide 24 evenly.`,
     });
   }
 
-  const createdMedicines = await Medicine.insertMany(medicinesToInsert);
+  // ✅ رفع الصورة لو موجودة
+  let imageUrl =
+    "https://res.cloudinary.com/dfjllx0gl/image/upload/v1744907351/default_ihvlie.jpg";
+
+  if (req.file) {
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "medicines" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      stream.end(req.file.buffer);
+    });
+
+    imageUrl = result.secure_url;
+  }
+
+  // ✅ إنشاء أوقات الجرعة
+  const times = generateTimes(time, numTimes);
+
+  // ✅ إنشاء الدواء
+  const newMedicine = await Medicine.create({
+    medicineName,
+    medicineDosage,
+    NumberOfTimes: numTimes,
+    time: times,
+    patientId,
+    doctorId,
+    notes,
+    image: imageUrl,
+  });
+
+  // ✅ التحقق من وجود Notification
+  let notification = await Notification.findOne({
+    userId: patientId,
+  });
+
+  if (!notification) {
+    await Notification.create({
+      userId: patientId,
+      medicine: [newMedicine._id],
+    });
+  } else {
+    notification.medicine.push(newMedicine._id);
+    await notification.save();
+  }
 
   res.status(201).json({
     status: "success",
-    results: createdMedicines.length,
-    data: createdMedicines,
+    data: newMedicine,
   });
 });
 
@@ -79,7 +133,7 @@ exports.getMyMedicines = asyncHandler(async (req, res, next) => {
 
   const medicines = await Medicine.find({ patientId }).populate(
     "doctorId",
-    "name email"
+    "name email image"
   );
 
   res.status(200).json({
@@ -121,5 +175,69 @@ exports.adjustMedicineTime = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     message: "Medicine times updated successfully.",
     updatedTimes,
+  });
+});
+
+exports.deleteMedicineByUser = asyncHandler(async (req, res, next) => {
+  const userId = req.user._id; // من التوكن بعد تسجيل الدخول
+  const { medicineId } = req.params;
+
+  const medicine = await Medicine.findById(medicineId);
+
+  if (!medicine) {
+    return res.status(404).json({ message: "Medicine not found." });
+  }
+
+  // ✅ تأكد إن الدوا تابع للمريض ده
+  if (medicine.patientId.toString() !== userId.toString()) {
+    return res
+      .status(403)
+      .json({ message: "You are not allowed to delete this medicine." });
+  }
+
+  // ✅ امسح الدوا
+  await Medicine.findByIdAndDelete(medicineId);
+
+  // ✅ امسحه كمان من Notification
+  await Notification.findOneAndUpdate(
+    { userId },
+    { $pull: { medicine: medicineId } }
+  );
+
+  res.status(200).json({
+    status: "success",
+    message: "Medicine deleted successfully.",
+  });
+});
+
+exports.deleteMedicineByDoctor = asyncHandler(async (req, res, next) => {
+  const doctorId = req.doctor._id;
+  const { medicineId } = req.params;
+
+  const medicine = await Medicine.findById(medicineId);
+
+  if (!medicine) {
+    return res.status(404).json({ message: "Medicine not found." });
+  }
+
+  // ✅ تأكد إن الدوا ده بتاع الدكتور اللي عامل الطلب
+  if (medicine.doctorId.toString() !== doctorId.toString()) {
+    return res
+      .status(403)
+      .json({ message: "You are not allowed to delete this medicine." });
+  }
+
+  // ✅ احذف الدوا
+  await Medicine.findByIdAndDelete(medicineId);
+
+  // ✅ احذفه من Notification
+  await Notification.findOneAndUpdate(
+    { userId: medicine.patientId },
+    { $pull: { medicine: medicineId } }
+  );
+
+  res.status(200).json({
+    status: "success",
+    message: "Medicine deleted successfully by doctor.",
   });
 });
