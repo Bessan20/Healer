@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const Medicine = require("../models/medicineModel");
-const Notification = require("../models/allNotificationModel");
 
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
@@ -104,21 +103,6 @@ exports.createMedicine = asyncHandler(async (req, res, next) => {
     image: imageUrl,
   });
 
-  // ✅ التحقق من وجود Notification
-  let notification = await Notification.findOne({
-    userId: patientId,
-  });
-
-  if (!notification) {
-    await Notification.create({
-      userId: patientId,
-      medicine: [newMedicine._id],
-    });
-  } else {
-    notification.medicine.push(newMedicine._id);
-    await notification.save();
-  }
-
   res.status(201).json({
     status: "success",
     data: newMedicine,
@@ -198,12 +182,6 @@ exports.deleteMedicineByUser = asyncHandler(async (req, res, next) => {
   // ✅ امسح الدوا
   await Medicine.findByIdAndDelete(medicineId);
 
-  // ✅ امسحه كمان من Notification
-  await Notification.findOneAndUpdate(
-    { userId },
-    { $pull: { medicine: medicineId } }
-  );
-
   res.status(200).json({
     status: "success",
     message: "Medicine deleted successfully.",
@@ -229,12 +207,6 @@ exports.deleteMedicineByDoctor = asyncHandler(async (req, res, next) => {
 
   // ✅ احذف الدوا
   await Medicine.findByIdAndDelete(medicineId);
-
-  // ✅ احذفه من Notification
-  await Notification.findOneAndUpdate(
-    { userId: medicine.patientId },
-    { $pull: { medicine: medicineId } }
-  );
 
   res.status(200).json({
     status: "success",
