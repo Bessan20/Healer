@@ -115,6 +115,11 @@ const doctorSchema = new mongoose.Schema({
             }
         ]
     },
+    appointmentPrice : {
+        type : Number,
+        default : 300,
+    },
+    
     password : {
         type : String,
         required : true,
