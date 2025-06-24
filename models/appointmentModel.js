@@ -2,16 +2,33 @@ const mongoose = require('mongoose');
 
 const appointmentSchema = new mongoose.Schema({
 
-    patientName : {
-        
+    bookingFor : {
         type : String,
-        required : true,
+        enum : ['self', 'family'],
+        required : [true,'The bookingFor field is required.'],
+        lowercase : true,
+        trim : true,
     },
 
-    patientMobile : {
-        
+    gender : {
         type : String,
-        required : true,
+        default : 'Male',
+        lowercase : true,
+        trim : true,
+    },
+
+    relation : {
+        type : String,
+        default : 'daughter',
+        lowercase : true,
+        trim : true,
+    },
+    
+    problem : {
+        type : String,
+        required : [true, 'The problem field is required.'],
+        lowercase : true,
+        trim : true,
     },
 
     patientId : {
@@ -23,7 +40,8 @@ const appointmentSchema = new mongoose.Schema({
     doctorName : {
         
         type : String,
-        required : true,
+        trim : true,
+        lowercase : true,
     },
 
     doctorId : {
@@ -32,16 +50,38 @@ const appointmentSchema = new mongoose.Schema({
         ref : 'Doctor',
     },
 
-    date : {
-        
-        type : Date,
-        required : true,
+    doctorSpecialization : { 
+
+        type : String,
+        trim : true,
+        lowercase : true,
+
     },
 
-    queueNumber : {
+    healthInsuranceCard : {
+        type : String,
+        default : 'no',
+        trim : true,
+        lowercase : true,
+    },
+
+    day : {
+
+        type : String,
+        trim : true,
+        lowercase : true,
+    },
+
+    time : {
+        type : String,
+        trim : true,
+        lowercase : true,
+    },
+
+    appointmentID : {
         
         type : Number,
-        required : true,
+        default : 1,
     },
 
 },{timestamps : true});
