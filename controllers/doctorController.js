@@ -50,6 +50,9 @@ const signUpDoctor = asyncHandler(async (req, res, next) => {
 
     imageUrl = result.secure_url; // Store the uploaded image URL
   }
+  if (typeof req.body.workingHours === 'string') {
+  req.body.workingHours = JSON.parse(req.body.workingHours);
+}
   const doctor = await Doctor.create({ ...req.body, image: imageUrl });
   const token = signToken(doctor._id);
 
