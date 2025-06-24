@@ -83,6 +83,15 @@ const doctorSchema = new mongoose.Schema({
                 rating: {
                     type: Number,
                 },
+
+                userName: {
+                    type: String,
+                },
+
+                userImage: {
+                    type: String,
+                    default: 'https://res.cloudinary.com/dfjllx0gl/image/upload/v1744907351/default_ihvlie.jpg',
+                },
                 
             }
         ],
