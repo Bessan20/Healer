@@ -76,7 +76,7 @@ const doctorSchema = new mongoose.Schema({
         type : [
             {
                 
-                review: {
+                reviewText: {
                     type: String,
                 },
 
