@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const Review = require('../models/reviewModel.js');
+const Review = require('../models/reviewsModel.js');
 const factory = require('./handlersFactory.js');
 const apiError = require('../utils/apiError.js');
 
