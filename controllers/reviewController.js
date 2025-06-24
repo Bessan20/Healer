@@ -9,7 +9,7 @@ const getAllReviews = factory.getAll(Review);
 const createReview = asyncHandler(async (req, res, next) => {
     
     
-    const doctorID = req.params;
+    const doctorID = req.params.id;
     const {reviewText , rating } = req.body;
     const review = await Review.create({
         userId: req.user._id,
