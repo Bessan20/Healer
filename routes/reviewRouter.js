@@ -10,7 +10,7 @@ const {
 } = require('../controllers/reviewController.js');
 
 router.route('/getAllReviews').get(getAllReviews);
-router.route('/createReview').post(protect, createReview);
+router.route('/createReview/:id').post(protect, createReview);
 
 module.exports = router;
 

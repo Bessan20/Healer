@@ -79,6 +79,10 @@ const doctorSchema = new mongoose.Schema({
                 review: {
                     type: String,
                 },
+
+                rating: {
+                    type: Number,
+                },
                 
             }
         ],
