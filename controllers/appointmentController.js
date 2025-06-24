@@ -14,12 +14,13 @@ const getAllAppointments = factory.getAll(Appointment);
 
 // Create a new appointment
 const createAppointment = asyncHandler(async (req, res, next) => {
-    const { doctorId, date } = req.body;
+    
+    /*const { doctorId, date } = req.body;
 
     const appointmentDate = new Date(date);
     if (isNaN(appointmentDate)) {
         return next(new apiError('Invalid date format. Please use a valid date (e.g., "2025-04-15").', 400));
-    }
+    }*/
 
     const user = await User.findById(req.user._id);
     if (!user) {
@@ -32,13 +33,22 @@ const createAppointment = asyncHandler(async (req, res, next) => {
     }
 
     const appointment = await Appointment.create({
-        patientName: user.name,
-        patientMobile: user.mobilePhone,
+        
+        bookingFor,
+        gender,
+        relation,
+        problem,
         patientId: user._id,
         doctorName: doctor.name,
-        doctorId,
-        date: appointmentDate,
-        queueNumber: 1,
+        doctorId: doctor._id,
+        doctorImage: doctor.image,
+        doctorSpecialization: doctor.specialization,
+        healthInsuranceCard,
+        day,
+        time,
+        price,
+        priceHealth,
+        appointmentID,
     });
 
     const appointmentDetails = {
