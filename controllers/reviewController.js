@@ -22,7 +22,7 @@ const createReview = asyncHandler(async (req, res, next) => {
 
     await Doctor.findByIdAndUpdate(
             doctorID,
-            { $push: { reviews : { reviewText , rating , userName , userImage } } },
+            { $push: { reviews : { reviewText , rating , userName  : req.user.name , userImage : req.user.image } } },
             { new: true }
         );
 
