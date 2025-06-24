@@ -50,6 +50,13 @@ const appointmentSchema = new mongoose.Schema({
         ref : 'Doctor',
     },
 
+    doctorImage : {
+        
+        type : String,
+        default : 'https://res.cloudinary.com/dfjllx0gl/image/upload/v1744907351/default_ihvlie.jpg',
+        trim : true,
+    },
+
     doctorSpecialization : { 
 
         type : String,
@@ -76,6 +83,18 @@ const appointmentSchema = new mongoose.Schema({
         type : String,
         trim : true,
         lowercase : true,
+    },
+
+    price : {
+        
+        type : Number,
+        default : 300,
+    },
+
+    priceHealth : {
+        
+        type : Number,
+        default : 300,
     },
 
     appointmentID : {
