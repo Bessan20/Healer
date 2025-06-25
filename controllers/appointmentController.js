@@ -6,6 +6,7 @@ const factory = require('./handlersFactory.js');
 const Appointment = require('../models/appointmentModel.js');
 const User = require('../models/userModel.js');
 const Doctor = require('../models/doctorModel.js');
+const Health = require('../models/healthModel.js');
 const Notification = require('../models/Notification');
 const apiError = require('../utils/apiError.js');
 
@@ -34,6 +35,8 @@ const createAppointment = asyncHandler(async (req, res, next) => {
         return next(new apiError('Doctor not found', 404));
     }
 
+    //check if the user has an active health insurance card
+    const healthInsurances = await Health.find({ userId });
     const appointment = await Appointment.create({
         
         bookingFor,
