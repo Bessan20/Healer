@@ -22,6 +22,8 @@ const createAppointment = asyncHandler(async (req, res, next) => {
         return next(new apiError('Invalid date format. Please use a valid date (e.g., "2025-04-15").', 400));
     }*/
 
+    const {bookingFor , gender , relation , problem , doctorId ,
+        day , time } = req.body
     const user = await User.findById(req.user._id);
     if (!user) {
         return next(new apiError('User not found', 404));
@@ -46,7 +48,7 @@ const createAppointment = asyncHandler(async (req, res, next) => {
         healthInsuranceCard,
         day,
         time,
-        price,
+        price : doctor.price,
         priceHealth,
         appointmentID,
     });
@@ -120,7 +122,7 @@ const cancelAppointment = asyncHandler(async (req, res, next) => {
                     patientID: appointment.patientId,
                     Day : appointment.day,
                     appointmentId: appointment.appointmentID,
-                    
+
                 },
             },
         },
