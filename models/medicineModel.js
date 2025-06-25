@@ -26,7 +26,11 @@ const medicineSchema = new mongoose.Schema(
       type: [String],
       required: true,
     },
-
+    durationInDays: {
+      type: Number,
+      required: true,
+      min: [1, "Duration must be at least 1 day"],
+    },
     NumberOfTimes: {
       type: Number,
       required: true,

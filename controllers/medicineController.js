@@ -47,16 +47,17 @@ exports.createMedicine = asyncHandler(async (req, res, next) => {
     time,
     patientId,
     notes,
+    durationInDays, // ✅ NEW
   } = req.body;
 
-  // ✅ التحقق من الوقت
+  // ✅ تحقق من الوقت
   if (!isValidTimeFormat(time)) {
     return res.status(400).json({
       message: `Invalid time format "${time}". Expected HH:mm.`,
     });
   }
 
-  // ✅ التحقق من عدد المرات
+  // ✅ تحقق من عدد الجرعات في اليوم
   const numTimes = Number(NumberOfTimes);
   if (
     !Number.isInteger(numTimes) ||
@@ -69,7 +70,15 @@ exports.createMedicine = asyncHandler(async (req, res, next) => {
     });
   }
 
-  // ✅ رفع الصورة لو موجودة
+  // ✅ تحقق من عدد الأيام
+  const days = Number(durationInDays);
+  if (!Number.isInteger(days) || days <= 0) {
+    return res.status(400).json({
+      message: `Invalid durationInDays "${durationInDays}". Must be a positive integer ≥ 1.`,
+    });
+  }
+
+  // ✅ رفع صورة لو فيه
   let imageUrl =
     "https://res.cloudinary.com/dfjllx0gl/image/upload/v1744907351/default_ihvlie.jpg";
 
@@ -88,7 +97,6 @@ exports.createMedicine = asyncHandler(async (req, res, next) => {
     imageUrl = result.secure_url;
   }
 
-  // ✅ إنشاء أوقات الجرعة
   const times = generateTimes(time, numTimes);
 
   // ✅ إنشاء الدواء
@@ -97,6 +105,7 @@ exports.createMedicine = asyncHandler(async (req, res, next) => {
     medicineDosage,
     NumberOfTimes: numTimes,
     time: times,
+    durationInDays: days, // ✅ NEW
     patientId,
     doctorId,
     notes,
