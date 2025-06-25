@@ -53,8 +53,8 @@ const createAppointment = asyncHandler(async (req, res, next) => {
 
     const appointmentDetails = {
         patientID: appointment.patientId,
-        Date: appointment.date,
-        queueNum: appointment.queueNumber,
+        Day : appointment.day,
+        appointmentId: appointment.appointmentID,
     };
 
     await Doctor.findByIdAndUpdate(
