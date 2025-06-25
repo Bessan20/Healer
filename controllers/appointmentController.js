@@ -6,6 +6,7 @@ const factory = require('./handlersFactory.js');
 const Appointment = require('../models/appointmentModel.js');
 const User = require('../models/userModel.js');
 const Doctor = require('../models/doctorModel.js');
+const Health = require('../models/healthModel.js');
 const Notification = require('../models/Notification');
 const apiError = require('../utils/apiError.js');
 
@@ -22,6 +23,8 @@ const createAppointment = asyncHandler(async (req, res, next) => {
         return next(new apiError('Invalid date format. Please use a valid date (e.g., "2025-04-15").', 400));
     }*/
 
+    const {bookingFor , gender , relation , problem , doctorId ,
+        day , time } = req.body
     const user = await User.findById(req.user._id);
     if (!user) {
         return next(new apiError('User not found', 404));
@@ -32,6 +35,8 @@ const createAppointment = asyncHandler(async (req, res, next) => {
         return next(new apiError('Doctor not found', 404));
     }
 
+    //check if the user has an active health insurance card
+    const healthInsurances = await Health.find({ userId });
     const appointment = await Appointment.create({
         
         bookingFor,
@@ -46,15 +51,15 @@ const createAppointment = asyncHandler(async (req, res, next) => {
         healthInsuranceCard,
         day,
         time,
-        price,
+        price : doctor.price,
         priceHealth,
         appointmentID,
     });
 
     const appointmentDetails = {
         patientID: appointment.patientId,
-        Date: appointment.date,
-        queueNum: appointment.queueNumber,
+        Day : appointment.day,
+        appointmentId: appointment.appointmentID,
     };
 
     await Doctor.findByIdAndUpdate(
@@ -118,8 +123,9 @@ const cancelAppointment = asyncHandler(async (req, res, next) => {
             $pull: {
                 doctorSchedule: {
                     patientID: appointment.patientId,
-                    Date: appointment.date,
-                    queueNum: appointment.queueNumber,
+                    Day : appointment.day,
+                    appointmentId: appointment.appointmentID,
+
                 },
             },
         },
