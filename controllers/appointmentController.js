@@ -118,8 +118,9 @@ const cancelAppointment = asyncHandler(async (req, res, next) => {
             $pull: {
                 doctorSchedule: {
                     patientID: appointment.patientId,
-                    Date: appointment.date,
-                    queueNum: appointment.queueNumber,
+                    Day : appointment.day,
+                    appointmentId: appointment.appointmentID,
+                    
                 },
             },
         },
