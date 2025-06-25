@@ -1,75 +1,67 @@
-const factory = require('./handlersFactory.js');
-const User = require('../models/userModel.js');
-const asyncHandler = require('express-async-handler');
-const jwt = require('jsonwebtoken');
-const apiError = require('../utils/apiError.js');
-const sendEmail = require('../utils/email.js');
-const crypto = require('crypto'); 
+const factory = require("./handlersFactory.js");
+const User = require("../models/userModel.js");
+const asyncHandler = require("express-async-handler");
+const jwt = require("jsonwebtoken");
+const apiError = require("../utils/apiError.js");
+const sendEmail = require("../utils/email.js");
+const crypto = require("crypto");
 const CryptoJs = require("crypto-js");
 
 const signToken = (ID) => {
-    return jwt.sign({ ID }, process.env.SECRET_STR, {
-        expiresIn: process.env.LOGIN_EXPIRES,
-    });
+  return jwt.sign({ ID }, process.env.SECRET_STR, {
+    expiresIn: process.env.LOGIN_EXPIRES,
+  });
 };
 
 const getAllUsers = factory.getAll(User);
 
 const signUp = asyncHandler(async (req, res, next) => {
-    const user = await User.create(req.body);
-    const token = signToken(user._id );
-    res.status(201).json({
-        Status: true,
-        Message: 'User created successfully',
-        token,
-        data: { user },
-    });
+  const user = await User.create(req.body);
+  const token = signToken(user._id);
+  res.status(201).json({
+    Status: true,
+    Message: "User created successfully",
+    token,
+    data: { user },
+  });
 });
 
-const loginWithId = asyncHandler(async(req,res,next)=>{
+const loginWithId = asyncHandler(async (req, res, next) => {
+  const { nationalID, password } = req.body;
 
-    const {nationalID , password } = req.body;
+  if (!nationalID)
+    return next(new apiError("Please  , enter your national ID.", 400));
+  if (!password)
+    return next(new apiError("Please , enter your account password.", 400));
 
-    if(!nationalID)
-        return next(new apiError('Please  , enter your national ID.', 400));
-    if(!password)
-        return next(new apiError('Please , enter your account password.', 400));
+  const user = await User.findOne({ nationalID }).select("+password");
 
-    const user = await User.findOne({nationalID}).select('+password');
+  if (!user) return next(new apiError("Invalid national ID.", 400));
 
-    if(!user)
-        return next(new apiError('Invalid national ID.', 400));
+  if (!(await user.comparePasswordInDb(password, user.password)))
+    return next(new apiError("Invalid password.", 400));
 
-    if(!(await user.comparePasswordInDb(password , user.password)))
-    return next(new apiError('Invalid password.', 400));
-   
-    const token = signToken(user._id );
-    res.json({Status : true, Message :"Login successful", token});
+  const token = signToken(user._id);
+  res.json({ Status: true, Message: "Login successful", token });
 });
 
-const loginWithEmail = asyncHandler(async(req,res,next)=>{
+const loginWithEmail = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
 
-    const {email , password } = req.body;
+  if (!email) return next(new apiError("Please  , enter your email.", 400));
+  if (!password)
+    return next(new apiError("Please , enter your account password.", 400));
 
-    if(!email)
-        return next(new apiError('Please  , enter your email.', 400));
-    if(!password)
-        return next(new apiError('Please , enter your account password.', 400));
+  const user = await User.findOne({ email }).select("+password");
 
-    const user = await User.findOne({email}).select('+password');
+  if (!user) return next(new apiError("Invalid email.", 400));
 
-    if(!user) 
-        return next(new apiError('Invalid email.', 400));
-    
-    
-    if(!(await user.comparePasswordInDb(password , user.password)))
-        return next(new apiError('Invalid password.', 400));
-    
-    const token = signToken(user._id);
-    res.json({Status : true, Message :"Login successful", token});
-    
+  if (!(await user.comparePasswordInDb(password, user.password)))
+    return next(new apiError("Invalid password.", 400));
+
+  const token = signToken(user._id);
+  res.json({ Status: true, Message: "Login successful", token });
 });
-
 
 // const forgotPassword = asyncHandler(async (req, res, next) => {
 //     const user = await User.findOne({ email: req.body.email });
@@ -86,7 +78,6 @@ const loginWithEmail = asyncHandler(async(req,res,next)=>{
 
 //     // Send the verification code via email
 //     const message = `Your password reset verification code is: ${verificationCode}. This code is valid for 10 minutes.`;
-
 
 //     try {
 //         await sendEmail({
@@ -160,7 +151,7 @@ const protectforget = asyncHandler(async (req, res, next) => {
   //2) verify token (no change happens, expired token)
   token = CryptoJs.AES.decrypt(token, process.env.HASH_PASS);
   token = token.toString(CryptoJs.enc.Utf8);
-  
+
   const decoded = jwt.verify(token, process.env.SECRET_STR);
   //3) check if user exists
   const currentUser = await User.findById(decoded.ID);
@@ -172,13 +163,13 @@ const protectforget = asyncHandler(async (req, res, next) => {
     );
   }
 
-//   //4)check the user is active or no
-//   if (!currentUser.active) {
-//     return next(
-//       new apiError("The user that belong to this token no active now"),
-//       401
-//     );
-//   }
+  //   //4)check the user is active or no
+  //   if (!currentUser.active) {
+  //     return next(
+  //       new apiError("The user that belong to this token no active now"),
+  //       401
+  //     );
+  //   }
   //5) check if user change his password after token created
   if (currentUser.passwordChangeAt) {
     const passChangedTimestamp = parseInt(
@@ -197,7 +188,6 @@ const protectforget = asyncHandler(async (req, res, next) => {
   next();
 });
 
-
 const forgetPassword = asyncHandler(async (req, res, next) => {
   //1)get user by email
   const user = await User.findOne({ email: req.body.Email });
@@ -208,7 +198,7 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
     );
   }
   //2) if user exit, generate reset random 6 digits and save it in db
-  const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+  const resetCode = Math.floor(1000 + Math.random() * 9000).toString();
   const hashResetCode = crypto
     .createHash("sha256")
     .update(resetCode)
@@ -308,52 +298,58 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   res.status(200).json({ token });
 });
 
-
-
-
 const protect = asyncHandler(async (req, res, next) => {
-    //* 1)check if token exists , if exists get it
-    let token = "";
-      if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-        token = req.headers.authorization.split(' ')[1];
-        console.log(token);
-        
-      }
+  //* 1)check if token exists , if exists get it
+  let token = "";
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+    console.log(token);
+  }
 
-      if(!token)
-        return next(new apiError('You are not logged in! Please log in to get access.', 401));
+  if (!token)
+    return next(
+      new apiError("You are not logged in! Please log in to get access.", 401)
+    );
 
-      //* 2)Verification token
-        const decoded = jwt.verify(token, process.env.SECRET_STR);
-        req.user = await User.findById(decoded.ID);
-        /*console.log(req.user._id);
+  //* 2)Verification token
+  const decoded = jwt.verify(token, process.env.SECRET_STR);
+  req.user = await User.findById(decoded.ID);
+  /*console.log(req.user._id);
         console.log(req.user.nationalID);*/
 
-    //* 3)check if user exists
-    const currentUser = await User.findById(decoded.ID);
-    if(!currentUser)
-        return next(new apiError('User no longer exists.', 401));
+  //* 3)check if user exists
+  const currentUser = await User.findById(decoded.ID);
+  if (!currentUser) return next(new apiError("User no longer exists.", 401));
 
-    //* 4)check if user changed password 
-    if(currentUser.passwordChangedAt && Date.now() - currentUser.passwordChangedAt < 10 * 60 * 1000){
-        return next(new apiError('Password has been changed recently. Please login again.', 401));
-    }
+  //* 4)check if user changed password
+  if (
+    currentUser.passwordChangedAt &&
+    Date.now() - currentUser.passwordChangedAt < 10 * 60 * 1000
+  ) {
+    return next(
+      new apiError(
+        "Password has been changed recently. Please login again.",
+        401
+      )
+    );
+  }
 
-    
-      next();
+  next();
 });
 
 module.exports = {
-    getAllUsers,
-    signUp,
-    loginWithId,
-    loginWithEmail,
-    // forgotPassword,
-    // resetPassword,
-    protect,
-          protectforget,
+  getAllUsers,
+  signUp,
+  loginWithId,
+  loginWithEmail,
+  // forgotPassword,
+  // resetPassword,
+  protect,
+  protectforget,
   forgetPassword,
   verifyPassResetCode,
   resetPassword,
-
 };
