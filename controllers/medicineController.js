@@ -79,8 +79,7 @@ exports.createMedicine = asyncHandler(async (req, res, next) => {
   }
 
   // ✅ رفع صورة لو فيه
-  let imageUrl =
-    "https://res.cloudinary.com/dfjllx0gl/image/upload/v1744907351/default_ihvlie.jpg";
+  let imageUrl;
 
   if (req.file) {
     const result = await new Promise((resolve, reject) => {
