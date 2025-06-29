@@ -83,13 +83,13 @@ if (healthInsurance) {
 
     const patientNotification = new Notification({
         userId: user._id,
-        message: `Hello ${user.name}, your appointment with Dr. ${doctor.name} on ${appointmentDate.toISOString().split('T')[0]} has been booked! Queue: ${appointment.queueNumber}`,
+        message: `Hello ${user.name}, your appointment with Dr. ${doctor.name} on ${time} ${day} has been booked! Queue: ${appointment.appointmentID}`,
     });
     await patientNotification.save();
 
     const doctorNotification = new Notification({
         doctorId: doctorId,
-        message: `Dr. ${doctor.name}, you have a new appointment with ${user.name} on ${appointmentDate.toISOString().split('T')[0]}. Queue: ${appointment.queueNumber}`,
+        message: `Dr. ${doctor.name}, you have a new appointment with ${user.name} on ${time} ${day}. Queue: ${appointment.appointmentID}`,
     });
     await doctorNotification.save();
 
