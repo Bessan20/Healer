@@ -67,7 +67,7 @@ if (healthInsurance) {
         doctorId: doctor._id,
         doctorImage: doctor.image,
         doctorSpecialization: doctor.specialization,
-        healthInsuranceCard : healthInsurance ? healthInsurance._id : null,
+        healthInsuranceCard : str,
         price : doctor.price,
         priceHealth,
         appointmentID : queueNumber,
