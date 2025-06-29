@@ -36,8 +36,8 @@ const createAppointment = asyncHandler(async (req, res, next) => {
     }
 
     //check if the user has an active health insurance card
-    
-    const healthInsurance = await Health.find(user._id);
+
+    const healthInsurance = await Health.find({ user: user._id });
     let priceHealth;
     if (healthInsurance) {
         priceHealth = doctor.price - 50;
