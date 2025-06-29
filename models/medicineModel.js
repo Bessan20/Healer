@@ -26,15 +26,17 @@ const medicineSchema = new mongoose.Schema(
       type: [String],
       required: true,
     },
-
+    durationInDays: {
+      type: Number,
+      required: true,
+      min: [1, "Duration must be at least 1 day"],
+    },
     NumberOfTimes: {
       type: Number,
       required: true,
     },
     image: {
       type: String,
-      default:
-        "https://res.cloudinary.com/dfjllx0gl/image/upload/v1744907351/default_ihvlie.jpg",
     },
     notes: String,
   },
