@@ -37,16 +37,17 @@ const createAppointment = asyncHandler(async (req, res, next) => {
 
     //check if the user has an active health insurance card
 
-    const healthInsurance = await Health.find({ user: user._id });
-    let priceHealth = 0;
-    if (healthInsurance) {
-        priceHealth = doctor.price - 50;
-        if (priceHealth < 0) priceHealth = 0;
-    } else {
-        priceHealth = doctor.price;
-    }
-
-
+   const healthInsurance = await Health.findOne({ user: user._id });
+if (typeof doctor.price !== "number") {
+    return next(new apiError("Doctor price is not set correctly.", 400));
+}
+let priceHealth = 0;
+if (healthInsurance) {
+    priceHealth = doctor.price - 50;
+    if (priceHealth < 0) priceHealth = 0;
+} else {
+    priceHealth = doctor.price;
+}
     const count = await Appointment.countDocuments({});
     let queueNumber = (count % 10) + 1;
     const appointment = await Appointment.create({
