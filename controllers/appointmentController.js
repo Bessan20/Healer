@@ -23,8 +23,8 @@ const createAppointment = asyncHandler(async (req, res, next) => {
         return next(new apiError('Invalid date format. Please use a valid date (e.g., "2025-04-15").', 400));
     }*/
 
-    const {bookingFor , gender , relation , problem , doctorId ,
-        day , time } = req.body
+    const {day , time , bookingFor , gender , relation , problem , doctorId ,
+        } = req.body
     const user = await User.findById(req.user._id);
     if (!user) {
         return next(new apiError('User not found', 404));
