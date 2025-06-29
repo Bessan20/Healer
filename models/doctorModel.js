@@ -115,7 +115,7 @@ const doctorSchema = new mongoose.Schema({
             }
         ]
     },
-    appointmentPrice : {
+         price : {
         type : Number,
         default : 300,
     },
