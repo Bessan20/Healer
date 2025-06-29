@@ -46,7 +46,7 @@ const formatNotificationDate = (date) => {
 router.route('/getAllAppointments').get(getAllAppointments);
 
 // Route to create a new appointment
-router.route('/createAppointment').post(protect, createAppointmentValidator, createAppointment);
+router.route('/createAppointment').post(protect,createAppointment);
 
 // Route to cancel an appointment
 router.route('/cancelAppointment').delete(protect, cancelAppointmentValidator, cancelAppointment);
