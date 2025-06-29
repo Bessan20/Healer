@@ -37,8 +37,21 @@ const createAppointment = asyncHandler(async (req, res, next) => {
 
     //check if the user has an active health insurance card
     const healthInsurances = await Health.find({ userId });
+    let priceHealth;
+    if (healthInsurance) {
+        priceHealth = doctor.price - 50;
+        if (priceHealth < 0) priceHealth = 0;
+    } else {
+        priceHealth = doctor.price;
+    }
+
+
+    const count = await Appointment.countDocuments({});
+    let queueNumber = (count % 10) + 1;
     const appointment = await Appointment.create({
         
+        day,
+        time,
         bookingFor,
         gender,
         relation,
@@ -48,12 +61,10 @@ const createAppointment = asyncHandler(async (req, res, next) => {
         doctorId: doctor._id,
         doctorImage: doctor.image,
         doctorSpecialization: doctor.specialization,
-        healthInsuranceCard,
-        day,
-        time,
+        healthInsuranceCard : healthInsurance ? healthInsurance._id : null,
         price : doctor.price,
         priceHealth,
-        appointmentID,
+        appointmentID : queueNumber,
     });
 
     const appointmentDetails = {
