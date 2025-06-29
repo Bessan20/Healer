@@ -177,6 +177,31 @@ const getDoctorBySpecialization = asyncHandler(async (req, res, next) => {
   });
 });
 
+const getAllDoctorsBySpecialization = asyncHandler(async (req, res, next) => {
+  const { specialization } = req.query;
+  let doctors;
+
+  if (specialization) {
+    // لو فيه تخصص معين في الـ query
+    doctors = await Doctor.find({
+      specialization: { $regex: specialization, $options: "i" },
+    }).select("-password -__v"); // ممكن تحددي الحقول اللي تظهر
+  } else {
+    // لو مفيش تخصص معين، رجّع كل الدكاترة
+    doctors = await Doctor.find().select("-password -__v");
+  }
+
+  if (doctors.length === 0) {
+    return next(
+      new apiError("No doctors found.", 404)
+    );
+  }
+
+  res.status(200).json({
+    Status: true,
+    data: doctors,
+  });
+});
 module.exports = {
   getAllDoctors,
   signUpDoctor,
@@ -187,4 +212,5 @@ module.exports = {
   uploadFile,
 
   protectDoctor,
+  getAllDoctorsBySpecialization
 };

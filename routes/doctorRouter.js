@@ -10,6 +10,7 @@ const {
     /*loginWithEmailDoctor,*/
     getDoctorByName,
     getDoctorBySpecialization,
+    getAllDoctorsBySpecialization,
     uploadFile
 } =
     require('../controllers/doctorController.js');
@@ -26,6 +27,8 @@ router.route('/getAllDoctors').get(getAllDoctors);
 router.route('/searchByName/:name').get(getDoctorByName);
 
 router.route('/searchBySpecialization/:specialization').get(getDoctorBySpecialization);
+
+router.route('/specialization').get(getAllDoctorsBySpecialization);
 
 router.route('/signUp').post(/*signUpValidator,*/uploadFile, signUpDoctor);
 
