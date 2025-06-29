@@ -177,7 +177,7 @@ const getDoctorBySpecialization = asyncHandler(async (req, res, next) => {
   });
 });
 
-const getAllDoctorsBySpecialization = asyncHandler(async (req, res, next) => {
+/*const getAllDoctorsBySpecialization = asyncHandler(async (req, res, next) => {
   const { specialization } = req.query;
   let doctors;
 
@@ -201,7 +201,7 @@ const getAllDoctorsBySpecialization = asyncHandler(async (req, res, next) => {
     Status: true,
     data: doctors,
   });
-});
+});*/
 module.exports = {
   getAllDoctors,
   signUpDoctor,
@@ -212,5 +212,5 @@ module.exports = {
   uploadFile,
 
   protectDoctor,
-  getAllDoctorsBySpecialization
+  //getAllDoctorsBySpecialization
 };
