@@ -42,11 +42,15 @@ if (typeof doctor.price !== "number") {
     return next(new apiError("Doctor price is not set correctly.", 400));
 }
 let priceHealth = 0;
+let str = "";
 if (healthInsurance) {
     priceHealth = doctor.price - 50;
     if (priceHealth < 0) priceHealth = 0;
+    str = "yes";
+
 } else {
     priceHealth = doctor.price;
+    str = "no";
 }
     const count = await Appointment.countDocuments({});
     let queueNumber = (count % 10) + 1;
