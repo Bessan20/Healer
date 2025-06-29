@@ -46,11 +46,11 @@ const doctorSchema = new mongoose.Schema({
                     type: mongoose.Schema.Types.ObjectId,
                     ref: 'User',
                 },
-                Date: {
-                    type: Date,
+                  Day: {
+                    type: String,
                     
                 },
-                queueNum: {
+                appointmentId: {
                     type: Number,
                 },
                 
