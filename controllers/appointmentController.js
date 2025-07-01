@@ -52,8 +52,11 @@ if (healthInsurance) {
     priceHealth = doctor.price;
     str = "no";
 }
-    const count = await Appointment.countDocuments({});
-    let queueNumber = (count % 10) + 1;
+    const count = await Appointment.countDocuments({
+      doctorId: doctorId,
+      day: day
+      });
+     let queueNumber = count + 1;
     const appointment = await Appointment.create({
         
         day,
