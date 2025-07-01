@@ -2,6 +2,7 @@ const asyncHandler  = require('express-async-handler');
 const factory = require("./handlersFactory.js");
 const apiError = require("../utils/apiError.js");
 const User = require('../models/userModel.js');
+const Appointment = require('../models/appointmentModel.js');
 const Profile = require('../models/profileModel.js');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
@@ -23,7 +24,8 @@ const uploadFile = upload.single("image"); // Expecting a single file with the f
 
 const userProfile = asyncHandler(async (req, res, next) => {
 
-    res.status(200).send(`Hello ${req.user.name}`);
+    const appointment = await Appointment.find({ patientId: req.user._id })
+    res.status(200).send(`Hello ${req.user.name}ahead of you there are ${appointment.appointmentID-1} `);
 });
 const getProfile = asyncHandler(async(req,res,next) => {
 
