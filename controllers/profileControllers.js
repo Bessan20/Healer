@@ -24,8 +24,8 @@ const uploadFile = upload.single("image"); // Expecting a single file with the f
 
 const userProfile = asyncHandler(async (req, res, next) => {
 
-    const appointment = await Appointment.find({ patientId: req.user._id })
-    res.status(200).send(`Hello ${req.user.name}ahead of you there are ${appointment.appointmentID-1} `);
+    const appointment = await Appointment.find({ patientId: req.user._id }).sort({ createdAt: 1 });
+    res.status(200).send(`Hello ${req.user.name} ahead of you there are ${appointment[0].appointmentID-1} `);
 });
 const getProfile = asyncHandler(async(req,res,next) => {
 
