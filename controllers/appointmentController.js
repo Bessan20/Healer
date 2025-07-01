@@ -37,7 +37,7 @@ const createAppointment = asyncHandler(async (req, res, next) => {
 
     //check if the user has an active health insurance card
 
-   const healthInsurance = await Health.findOne({ user: user._id });
+   const healthInsurance = await Health.findOne({ userId: user._id });
 if (typeof doctor.price !== "number") {
     return next(new apiError("Doctor price is not set correctly.", 400));
 }
@@ -114,7 +114,7 @@ if (healthInsurance) {
         read: doctorNotification.read,
         createdAt: doctorNotification.createdAt,
     });
-
+      
     res.status(201).json({
         status: 'success',
         data: {
