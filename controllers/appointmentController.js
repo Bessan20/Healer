@@ -154,13 +154,13 @@ const cancelAppointment = asyncHandler(async (req, res, next) => {
 
     const patientNotification = new Notification({
         userId: appointment.patientId,
-        message: `Hello ${patient.name}, your appointment with Dr. ${doctor.name} on ${appointment.date.toISOString().split('T')[0]} has been canceled.`,
+        message: `Hello ${patient.name}, your appointment with Dr. ${doctor.name} on ${time} ${day} has been canceled.`,
     });
     await patientNotification.save();
 
     const doctorNotification = new Notification({
         doctorId: appointment.doctorId,
-        message: `Dr. ${doctor.name}, the appointment with ${patient.name} on ${appointment.date.toISOString().split('T')[0]} has been canceled.`,
+        message: `Dr. ${doctor.name}, the appointment with ${patient.name} on ${time} ${day} has been canceled.`,
     });
     await doctorNotification.save();
 
