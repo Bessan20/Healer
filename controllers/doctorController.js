@@ -151,7 +151,7 @@ const getDoctorByName = asyncHandler(async (req, res, next) => {
   const { name } = req.query;
   const doctor = await Doctor.find({
     name: { $regex: name.split("").join(".*"), $options: "i" },
-  }).select("image name specialization rate  -_id");
+  }).select("image name specialization rate exp reviews -_id");
   if (doctor.length === 0)
     return next(new apiError("No doctors found with that name.", 404));
 
@@ -163,7 +163,7 @@ const getDoctorBySpecialization = asyncHandler(async (req, res, next) => {
 
   const doctor = await Doctor.find({
     specialization: { $regex: specialization, $options: "i" },
-  }).select("image name specialization rate  -_id");
+  }).select("image name specialization rate exp reviews -_id");
 
   if (doctor.length === 0) {
     return next(
