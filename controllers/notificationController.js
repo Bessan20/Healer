@@ -35,7 +35,7 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
   if (req.file) {
     const result = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder: "medicines" },
+        { folder: "notification" },
         (error, result) => {
           if (error) reject(error);
           else resolve(result);
