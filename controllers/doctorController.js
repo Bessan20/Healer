@@ -81,7 +81,9 @@ const loginWithIdDoctor = asyncHandler(async (req, res, next) => {
     return next(new apiError("Invalid password.", 400));
 
   const token = signToken(doctor._id);
-  res.json({ Status: true, Message: "Login successful", token });
+  const { data } = doctor;
+
+  res.json({ Status: true, Message: "Login successful", token , data});
 });
 
 const protectDoctor = asyncHandler(async (req, res, next) => {
