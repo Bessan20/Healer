@@ -61,6 +61,7 @@ const loginWithEmail = asyncHandler(async (req, res, next) => {
     return next(new apiError("Invalid password.", 400));
 
   const token = signToken(user._id);
+  user.password = undefined; // Remove password from response
   res.json({ Status: true, Message: "Login successful", token , data: { user } });
 });
 
