@@ -92,6 +92,10 @@ const doctorSchema = new mongoose.Schema({
                     type: String,
                     default: 'https://res.cloudinary.com/dfjllx0gl/image/upload/v1744907351/default_ihvlie.jpg',
                 },
+                createdAt: {
+                    type: Date,
+                    default: Date.now,
+                }
                 
             }
         ],
