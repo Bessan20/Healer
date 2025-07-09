@@ -42,7 +42,8 @@ const loginWithId = asyncHandler(async (req, res, next) => {
     return next(new apiError("Invalid password.", 400));
 
   const token = signToken(user._id);
-  res.json({ Status: true, Message: "Login successful", token });
+  user.password = undefined; // Remove password from response
+  res.json({ Status: true, Message: "Login successful", token , data : { user } });
 });
 
 const loginWithEmail = asyncHandler(async (req, res, next) => {
@@ -60,7 +61,7 @@ const loginWithEmail = asyncHandler(async (req, res, next) => {
     return next(new apiError("Invalid password.", 400));
 
   const token = signToken(user._id);
-  res.json({ Status: true, Message: "Login successful", token });
+  res.json({ Status: true, Message: "Login successful", token , data: { user } });
 });
 
 // const forgotPassword = asyncHandler(async (req, res, next) => {
