@@ -16,29 +16,14 @@ const getAllAppointments = asyncHandler(async(req,res,next)=>{
 
     const appointments = await Appointment.find();
  const detailedAppointments = await Promise.all(
-  appointments.map(async (appointment) => {
-    const user = await User.findById(appointment.patientId).select('-password');
-    let profile = null;
-    let debugReason = '';
-    if (user) {
-      if (user.profileId) {
-        profile = await Profile.findById(user.profileId);
-        if (!profile) debugReason = 'Profile not found for this profileId';
-      } else {
-        debugReason = 'User has no profileId';
-      }
-    } else {
-      debugReason = 'User not found';
-    }
-    return {
-      ...appointment.toObject(),
-      patient: user,
-      profile: profile,
-      debugReason: debugReason, // حتظهر ليك السبب في الـ response
-    };
-  })
-);
-
+    appointments.map(async (appointment) => {
+      const user = await User.findById(appointment.patientId).select('-password');
+      return {
+        ...appointment.toObject(),
+        patient: user,
+      };
+    })
+  );
 res.status(200).json({
   status: 'success',
   results: detailedAppointments.length,
