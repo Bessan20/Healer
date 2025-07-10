@@ -11,7 +11,15 @@ const Notification = require('../models/Notification');
 const apiError = require('../utils/apiError.js');
 
 // Get all appointments using factory handler
-const getAllAppointments = factory.getAll(Appointment);
+const getAllAppointments = asyncHandler(async(req,res,next)=>{
+
+    const appointments = await Appointment.find().populate('patientId' , 'name email phone');
+  res.status(200).json({
+    status: 'success',
+    results: appointments.length,
+    data: appointments,
+  });
+});
 
 // Create a new appointment
 const createAppointment = asyncHandler(async (req, res, next) => {
