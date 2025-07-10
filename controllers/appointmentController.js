@@ -15,25 +15,30 @@ const apiError = require('../utils/apiError.js');
 const getAllAppointments = asyncHandler(async(req,res,next)=>{
 
     const appointments = await Appointment.find();
-
-// هات بيانات الـ users والـ profiles لكل appointment
-const detailedAppointments = await Promise.all(
+ const detailedAppointments = await Promise.all(
   appointments.map(async (appointment) => {
     const user = await User.findById(appointment.patientId).select('-password');
-    // لو عندك profileId جوه user
     let profile = null;
-    if (user && user.profileId) {
-      profile = await Profile.findById(user.profileId);
+    let debugReason = '';
+    if (user) {
+      if (user.profileId) {
+        profile = await Profile.findById(user.profileId);
+        if (!profile) debugReason = 'Profile not found for this profileId';
+      } else {
+        debugReason = 'User has no profileId';
+      }
+    } else {
+      debugReason = 'User not found';
     }
     return {
       ...appointment.toObject(),
       patient: user,
       profile: profile,
+      debugReason: debugReason, // حتظهر ليك السبب في الـ response
     };
   })
 );
 
-// رجّعهم في الـ response
 res.status(200).json({
   status: 'success',
   results: detailedAppointments.length,
