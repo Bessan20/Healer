@@ -72,11 +72,11 @@ exports.createMedicine = asyncHandler(async (req, res, next) => {
 
   // ✅ تحقق من عدد الأيام
   const days = Number(durationInDays);
-  if (!Number.isInteger(days) || days <= 0) {
-    return res.status(400).json({
-      message: `Invalid durationInDays "${durationInDays}". Must be a positive integer ≥ 1.`,
-    });
-  }
+  // if (!Number.isInteger(days) || days <= 0) {
+  //   return res.status(400).json({
+  //     message: `Invalid durationInDays "${durationInDays}". Must be a positive integer ≥ 1.`,
+  //   });
+  // }
 
   // ✅ رفع صورة لو فيه
   let imageUrl;
