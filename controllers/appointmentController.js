@@ -7,26 +7,38 @@ const Appointment = require('../models/appointmentModel.js');
 const User = require('../models/userModel.js');
 const Doctor = require('../models/doctorModel.js');
 const Health = require('../models/healthModel.js');
+const Profile = require('../models/profileModel.js');
 const Notification = require('../models/Notification');
 const apiError = require('../utils/apiError.js');
 
 // Get all appointments using factory handler
 const getAllAppointments = asyncHandler(async(req,res,next)=>{
 
-    const appointments = await Appointment.find()
-    .populate({
-      path: 'patientId',
-      select: '-password',
-      populate: {
-        path: 'profileId', // عدلي الاسم حسب Model البروفايل عندك
-        model: 'Profile'   // عدلي الاسم حسب اسم موديل البروفايل
-      }
-    })
-  res.status(200).json({
-    status: 'success',
-    results: appointments.length,
-    data: appointments,
-  });
+    const appointments = await Appointment.find();
+
+// هات بيانات الـ users والـ profiles لكل appointment
+const detailedAppointments = await Promise.all(
+  appointments.map(async (appointment) => {
+    const user = await User.findById(appointment.patientId).select('-password');
+    // لو عندك profileId جوه user
+    let profile = null;
+    if (user && user.profileId) {
+      profile = await Profile.findById(user.profileId);
+    }
+    return {
+      ...appointment.toObject(),
+      patient: user,
+      profile: profile,
+    };
+  })
+);
+
+// رجّعهم في الـ response
+res.status(200).json({
+  status: 'success',
+  results: detailedAppointments.length,
+  data: detailedAppointments,
+});
 });
 
 // Create a new appointment
