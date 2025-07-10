@@ -13,7 +13,15 @@ const apiError = require('../utils/apiError.js');
 // Get all appointments using factory handler
 const getAllAppointments = asyncHandler(async(req,res,next)=>{
 
-    const appointments = await Appointment.find().populate('patientId' , 'image name email phone date gender');
+    const appointments = await Appointment.find()
+    .populate({
+      path: 'patientId',
+      select: '-password',
+      populate: {
+        path: 'profileId', // عدلي الاسم حسب Model البروفايل عندك
+        model: 'Profile'   // عدلي الاسم حسب اسم موديل البروفايل
+      }
+    })
   res.status(200).json({
     status: 'success',
     results: appointments.length,
